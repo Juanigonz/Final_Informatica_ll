@@ -25,6 +25,10 @@ class Niveles{
     this.Fondo=Fondo;
     
     cuadroCentralTamaño=alto_hud;
+    
+    //Variables referidas al nivel
+    puntaje=0;
+    
   }
   //Imagenes
   PImage Cuadrado_error=loadImage("Assets/img/Cuadrado_error.png");
@@ -70,16 +74,22 @@ class Niveles{
   char tecla_v;
   int B_o_M;
   int Opacidad_B_o_M;
+  float puntaje;
+  
+  //Metodo que maneja la parte gráfica de los niveles
   
   void interfazNivel() {
+    
     int i, j;
     image(fondo,0,0);
     // HUD de las flechas presentadas
     fill(200);
+    textSize((height*0.1));
+    text(""+puntaje,(width/2)-(width/5)/2,height*0.1);
    
    image(cinta_transportadora,x_hud,y_hud,ancho_hud,alto_hud);
     
-   clip(x_hud, y_hud-5, ancho_hud, alto_hud+5);
+   clip(x_hud, y_hud, ancho_hud, alto_hud);
 
     for ( i = cuadros.size() - 1; i >= 0; i--) {
         Cuadro cuadro = cuadros.get(i);
@@ -137,13 +147,16 @@ class Niveles{
         // Desactivar el cuadro central cuando desaparezca
         if (cuadroCentralAlpha <= 0) {
             mostrarCuadroCentral = false;
+            Opacidad_B_o_M=255;
+            B_o_M=2;
+            puntaje-=300;
         }
         
     }
     noTint();
     imageMode(CORNER);
     
-    //Manejo de botones y mensajes de error en el nivel
+    //Manejo de botones y mensajes de error o acierto en el nivel
     tint(255,Opacidad_B_o_M);
     switch(tecla_v){
       case 'a':
@@ -152,11 +165,14 @@ class Niveles{
           Opacidad_B_o_M=255;
           tecla_v = 'f';
           B_o_M=1;
+          puntaje+=2.5*cuadroCentralAlpha;
+          print(puntaje);
         }
         else if ((caja_abierta_Iz!=Imagen_de_salida) || (mostrarCuadroCentral==false)){
           Opacidad_B_o_M=255;
           tecla_v = 'f';
           B_o_M=2;
+          puntaje-=300;
         }
         break;
         
@@ -166,11 +182,13 @@ class Niveles{
           Opacidad_B_o_M=255;
           tecla_v = 'f';
           B_o_M=1;
+          puntaje+=2.5*cuadroCentralAlpha;
         }
         else if ((caja_abierta_Ab!=Imagen_de_salida) || (mostrarCuadroCentral==false)){
           Opacidad_B_o_M=255;
           tecla_v = 'f';
           B_o_M=2;
+          puntaje-=300;
         }
         break;
         case 'd':
@@ -179,11 +197,13 @@ class Niveles{
           Opacidad_B_o_M=255;
           tecla_v = 'f';
           B_o_M=1;
+          puntaje+=2.5*cuadroCentralAlpha;
         }
         else if ((caja_abierta_De!=Imagen_de_salida) || (mostrarCuadroCentral==false)){
           Opacidad_B_o_M=255;
           tecla_v = 'f';
           B_o_M=2;
+          puntaje-=300;
         }
         break;
         case 'w':
@@ -192,11 +212,13 @@ class Niveles{
           Opacidad_B_o_M=255;
           tecla_v = 'f';
           B_o_M=1;
+          puntaje+=2.5*cuadroCentralAlpha;
         }
         else if ((caja_abierta_Ar!=Imagen_de_salida) || (mostrarCuadroCentral==false)){
           Opacidad_B_o_M=255;
           tecla_v = 'f';
           B_o_M=2;
+          puntaje-=300;
         }
         break;
 
@@ -209,14 +231,17 @@ class Niveles{
       if (Opacidad_B_o_M <= 0) {
           B_o_M = 0; // Restablecer el estado solo si la opacidad es 0
       }
+      
     } 
-    else if (B_o_M == 2) { // Cuadro de error
+    else if (B_o_M == 2 ) { // Cuadro de error
+    
       image(Cuadrado_error, 0, 0, width * 0.1, width * 0.1);
       
       Opacidad_B_o_M -= 5; // Reducir gradualmente la opacidad
       if (Opacidad_B_o_M <= 0) {
           B_o_M = 0; // Restablecer el estado solo si la opacidad es 0
       }
+      
     }
 
     noTint();
