@@ -1,3 +1,6 @@
+//Librerias
+  import gifAnimation.*; // Agrega la posibilidad de utilizar gifs
+
 //Variables globales
   String nombreJuego="Music Reflex";
   String selecCapitulos="Niveles";
@@ -30,8 +33,11 @@
   Escena escenaInicio = new Escena();
   Movimiento movimientoInicio = new Movimiento();
 
+//Gifs
+  Gif myGif;
+
 //Imagenes
-  PImage cartelNiveles, cartelSelec, fondoMenu;
+  PImage cartelNiveles, cartelSelecNiv, cartelPuntuaciones, cartelSelecPunt, cartelSalir, cartelSelecSalir, cartelVolver, fondoMenu;
   
 void setup(){
   size(1280,720,P2D);
@@ -39,15 +45,24 @@ void setup(){
   smooth();
   background(gris);
   
-  cartelNiveles = loadImage("Assets/img/Cartel.png");
-  cartelSelec = loadImage("Assets/img/Cartel seleccionado.png");
+// Carga el GIF animado 
+  myGif = new Gif(this, "Assets/Gif/prueba.gif"); 
+  myGif.loop(); // Hace que el GIF se reproduzca en bucle
+
+//Carga las imagenes
+  cartelNiveles = loadImage("Assets/img/Cartel Niveles.png");
+  cartelSelecNiv = loadImage("Assets/img/Cartel Selec Niveles.png");
+  cartelPuntuaciones = loadImage("Assets/img/Cartel Puntuaciones.png");
+  cartelSelecPunt = loadImage("Assets/img/Cartel Selec Puntuaciones.png");
+  cartelSalir = loadImage("Assets/img/Cartel Salir.png");
+  cartelSelecSalir = loadImage("Assets/img/Cartel Selec Salir.png");
+  cartelVolver = loadImage("Assets/img/Cartel Volver.png");
   fondoMenu = loadImage("Assets/img/Fondo menu.png");
 }
 
 void draw(){
   println("Posicion X:",mouseX, ", Posicion Y:", mouseY, ", Menu", menu, ", Escena", escena, ", Salir", salir);
   if (menu == 0 && salir == 0){
-    
     menuInicio.menu_inicio();
     movimientoInicio.movimiento_menu();
   }
@@ -56,7 +71,8 @@ void draw(){
   }
   else if ((menu == 1) && (escena == 2)){
      escenaInicio.escena_inicio();
-  }else if (salir == 1){
+  }
+  else if ((menu == 1) && (salir == 1)){
      escenaInicio.Salir();
      movimientoInicio.movimiento_salir();
   }

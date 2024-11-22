@@ -31,27 +31,37 @@ class Escena{
        text("NO",640,430);
       
       //Funcionalidad
-        if((mouseX > 520) && (mouseX < 550)){
-          if((mouseY > 400) && (mouseY < 430)){
+        if((mouseY > 400) && (mouseY < 430)){
+          if((mouseX > 530) && (mouseX < 550)){
+            
             fill(naranja);
             rect(510, 395, 55, 45);
+            fill(negro);
+            textSize(40);
+            text("SI",520,430);
+           
             if(keyPressed == true){
               if(keyCode == ENTER){
                 exit();
               }
             }
-          } 
-        }else if((mouseX > 640) && (mouseX < 690)){
-          if((mouseY > 400) && (mouseY < 430)){
+          }
+          else if((mouseX > 640) && (mouseX < 690)){
+            
             fill(naranja);
             rect(635, 395, 60, 45);
+            fill(negro);
+            textSize(40);
+            text("NO",640,430);
+            
             if(keyPressed == true){
               if(keyCode == ENTER){
+                menu = 0;
                 salir = 0;
                 delay(100);
-              }
-            }
-          } 
+              }  
+            } 
+          }
         }
      }
   }
