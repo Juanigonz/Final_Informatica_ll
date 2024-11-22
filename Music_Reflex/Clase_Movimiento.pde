@@ -13,46 +13,47 @@ class Movimiento{
            delay(100);
            }
          }
-       } else{
+       } else if (y < 290){
+         x = 480;
+         y = 490;
+         delay(100);
+       } else if (y > 490){
          x = 480;
          y = 290;
-       }
+         delay(100);
+       } 
      }
      void movimiento_salir(){
        mouseX = x;
        mouseY = y;
-       if( x >= 520 && x <= 670){
+       if( x >= 520 && x <= 690){
          if(keyPressed == true){
            if(keyCode == RIGHT){
-           x = x - 120;
+           x = x - 130;
            delay(100);
            }
          }
          if(keyPressed == true){
            if(keyCode == LEFT){
-           x = x + 120;
+           x = x + 130;
            delay(100);
            }
          }
        } else if (x < 520){
-         x = 640;
-         y = 400;
-       } else if (x > 670){
-         x = 520;
-         y = 400;
+         x = 670;
+         y = 415;
+         delay(100);
+       } else if (x > 690){
+         x = 540;
+         y = 415;
+         delay(100);
        }
      }
    }  
      void Volver (){ //coloca el boton volver en un lugar definido de la pantalla
-       noStroke();
-       fill(verde);
-       rect(30,625,170,50);
-       stroke(0);
-        
-       fill(negro);
-       textSize(40);
-       text(selecVolver,80,665);
-        
+       
+       image(cartelVolver, 30, 625);
+       
        if(keyPressed == true){
           if(keyCode == SHIFT){
            delay(500);
