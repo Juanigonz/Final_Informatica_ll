@@ -7,7 +7,7 @@ void setup() {
   // Configuración inicial
   //fullScreen();
   size(1280, 720);
-  frameRate(60);
+  frameRate(30);
   
   noCursor();
   // Inicializa el objeto SubMenuLVL con 2 filas y 3 columnas

@@ -31,8 +31,8 @@ class Escena{
        text("NO",640,430);
       
       //Funcionalidad
-        if((mouseY > 400) && (mouseY < 430)){
-          if((mouseX > 530) && (mouseX < 550)){
+        if((y > 400) && (y < 430)){
+          if((x > 530) && (x < 550)){
             
             fill(naranja);
             rect(510, 395, 55, 45);
@@ -41,12 +41,12 @@ class Escena{
             text("SI",520,430);
            
             if(keyPressed == true){
-              if(keyCode == ENTER){
+              if(key == 'l'){
                 exit();
               }
             }
           }
-          else if((mouseX > 640) && (mouseX < 690)){
+          else if((x > 640) && (x < 690)){
             
             fill(naranja);
             rect(635, 395, 60, 45);
@@ -55,7 +55,7 @@ class Escena{
             text("NO",640,430);
             
             if(keyPressed == true){
-              if(keyCode == ENTER){
+              if(key == 'l'){
                 menu = 0;
                 salir = 0;
                 delay(100);

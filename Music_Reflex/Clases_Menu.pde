@@ -12,17 +12,17 @@ class Menu{
       
 //Capitulos
       //Boton
-      if((mouseX > 450) && (mouseX < 800)){
-        if((mouseY > 260) && (mouseY < 310)){
+      if((x > 450) && (x < 800)){
+        if((y > 260) && (y < 310)){
           
           image(cartelSelecNiv, 440, 230);
 
           if(keyPressed == true){
-            if(keyCode == ENTER){
+            if(key == 'l'){
               
-              delay(500);
               menu = 1;
               escena = 1;
+              delay(500);
             }
           }
          }else { 
@@ -33,15 +33,14 @@ class Menu{
       
 //Puntuaciones
       //Boton      
-      if((mouseX > 450) && (mouseX < 800)){
-        if((mouseY > 360) && (mouseY < 410)){
-          
+      if((x > 450) && (x < 800)){
+        if((y > 360) && (y < 410)){
+              
           image(cartelSelecPunt, 440, 330);
           
           if(keyPressed == true){
-            if(keyCode == ENTER){
+            if(key == 'l'){
               
-              delay(500);
               menu = 1;
               escena = 2;
             }
@@ -55,13 +54,13 @@ class Menu{
       
 //Salir
       //Boton  
-      if((mouseX > 450) && (mouseX < 800)){
-        if((mouseY > 460) && (mouseY < 510)){
+      if((x > 450) && (x < 800)){
+        if((y > 460) && (y < 510)){
           
           image(cartelSelecSalir, 440, 430);
       
           if(keyPressed == true){
-            if(keyCode == ENTER){
+            if(key == 'l'){
               menu = 1;
               salir = 1;
             }
