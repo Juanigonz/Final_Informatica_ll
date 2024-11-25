@@ -1,6 +1,7 @@
 SubMenuLVL MenuNiveles; // Instancia del objeto SubMenuLVL
-Niveles Nivel_1;
+Niveles Nivel_1; // Instancia del objeto Niveles
 int nivel=0;
+char teclaPresionada;
 PImage fondo;
 
 void setup() {
@@ -14,15 +15,11 @@ void setup() {
   MenuNiveles = new SubMenuLVL(2, 3);
   
   //Fondo del nivel 1
-  fondo=loadImage("Assets/img/Fondo.jpg");
+  fondo=loadImage("Assets/img/Nivel_1/Fondo.jpg");
   fondo.resize(width,height);
-  
 }
 
 void draw() {
-  float Al=height;
-  float An=width;
-  
   // Color de fondo
   color bg = color(227, 247, 255);
   background(bg);
@@ -34,21 +31,19 @@ void draw() {
     // Dibuja la cuadrícula usando el método de la clase
     MenuNiveles.dibujarCuadricula(0.05, 0.2, rectangulosC, rectSeleccionado);
     
-    Nivel_1= new Niveles(2,Al,An,fondo);
-  
+    Nivel_1= new Niveles(2 ,height,width,fondo,"Nivel_1/",this,1);
   }
   
   if(nivel==1){
     
-    Nivel_1.interfazNivel();
-  
+    nivel = Nivel_1.interfazNivel();
   }
   
 }
 
 // Manejo de teclas
 void keyPressed() {
-  char teclaPresionada = key;
+  teclaPresionada = key;
   switch(teclaPresionada){
     /*Paso una letra respecto a la tecla presionada*/
     case 'a':
@@ -95,10 +90,26 @@ void keyPressed() {
       }
       break;
     case 'l':
+     if(nivel==0){
       nivel=MenuNiveles.moverSeleccion(teclaPresionada);
+     }
+     if(nivel!=0){
+      if(nivel==1){
+        Nivel_1.tecla_v='l';
+      }
+    }
       break;
     case 'k':
+    if(nivel!=0){
+      if(nivel==1){
+        Nivel_1.tecla_v='k';
+        Nivel_1.interfazNivel();
+      }
+
+    }
+    if(nivel==0)
       nivel=MenuNiveles.moverSeleccion(teclaPresionada);
+
       break;
   }
   
