@@ -31,7 +31,7 @@ void draw() {
     // Dibuja la cuadrícula usando el método de la clase
     MenuNiveles.dibujarCuadricula(0.05, 0.2, rectangulosC, rectSeleccionado);
     
-    Nivel_1= new Niveles(2 ,height,width,fondo,"Nivel_1/",this,1);
+    Nivel_1= new Niveles(3 ,height,width,fondo,"Nivel_1/",this,1);
   }
   
   if(nivel==1){
