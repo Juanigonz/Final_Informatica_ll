@@ -19,8 +19,8 @@
   color blanco= color(255,255,255);
   
 //Cursor
-  int x;
-  int y;
+  int x = 0;
+  int y = 0;
 
 /*escena = 1 Niveles
   escena = 2 Puntuaciones*/
@@ -40,7 +40,7 @@
   PImage cartelNiveles, cartelSelecNiv, cartelPuntuaciones, cartelSelecPunt, cartelSalir, cartelSelecSalir, cartelVolver, fondoMenu;
   
 void setup(){
-  size(1280,720,P2D);
+  size(1280,720);
   frameRate(30);
   smooth();
   background(gris);
@@ -61,7 +61,7 @@ void setup(){
 }
 
 void draw(){
-  println("Posicion X:",mouseX, ", Posicion Y:", mouseY, ", Menu", menu, ", Escena", escena, ", Salir", salir);
+  println("Posicion X:", x, ", Posicion Y:", y, ", Menu", menu, ", Escena", escena, ", Salir", salir);
   if (menu == 0 && salir == 0){
     menuInicio.menu_inicio();
     movimientoInicio.movimiento_menu();
