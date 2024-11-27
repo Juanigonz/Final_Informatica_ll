@@ -1,82 +1,117 @@
-//Librerias
+// Librerias
   import gifAnimation.*; // Agrega la posibilidad de utilizar gifs
 
-//Variables globales
-  String nombreJuego="Music Reflex";
-  String selecCapitulos="Niveles";
-  String selecPuntuacion="Puntajes";
-  String selecSalir="Salir";
-  String selecVolver="Volver";
+// Resoluciones
+  int anchoOriginal = 1280;
+  int altoOriginal = 720;  //Esta es la resolucion a la cual se diseño todo
+  int anchoNuevo;
+  int altoNuevo;    //Estas variables sirven para modificar las coordenadas x e y de las imagenes para que se coloquen correctamente segun la resolucion
   
-//colores definidos
-  color naranja= color(240,165,0);
-  color azul= color(0,0,255);
-  color rojo= color(255,0,0);
-  color verde= color(0,255,0);
-  color amarrillo= color(255,255,0);
-  color gris= color(100,100,100);
-  color negro= color(0,0,0);
-  color blanco= color(255,255,255);
-  
-//Cursor
+// Colores definidos
+  color gris = color(100, 100, 100);
+  color negro = color(0, 0, 0);
+  color blanco = color(255, 255, 255);
+
+// Posicion de los cuadrados interactuables en la pantalla
   int x = 0;
   int y = 0;
+  
+//Redimencion de la imagen
+  //float[] Al_img;   -------------
+  //float[] An_img;   -------------
 
-/*escena = 1 Niveles
-  escena = 2 Puntuaciones*/
+/* escena = 1 Niveles
+   escena = 2 Puntuaciones */
   int menu = 0;
   int escena = 0;
-  int salir = 0; //solo sirve cambia si se preciona salir
+  int salir = 0; // Solo cambia si se presiona salir
 
-//Clases
+// Clases
   Menu menuInicio = new Menu();
   Escena escenaInicio = new Escena();
   Movimiento movimientoInicio = new Movimiento();
 
-//Gifs
+// Gifs
   Gif myGif;
 
-//Imagenes
-  PImage cartelNiveles, cartelSelecNiv, cartelPuntuaciones, cartelSelecPunt, cartelSalir, cartelSelecSalir, cartelVolver, fondoMenu;
-  
-void setup(){
-  size(1280,720);
+// Imagenes
+  PImage cartelNiveles, cartelSelecNiv, cartelPuntuaciones, cartelSelecPunt, cartelSalir, cartelSelecSalir;
+  PImage cartelVolver, cartelTitulo, fondoMenu, cartelExit, cartelExitNo, cartelExitSi, selecExitNo, selecExitSi;
+
+  /*PImage[] imagenes = {cartelNiveles, cartelSelecNiv, cartelPuntuaciones, cartelSelecPunt, cartelSalir, cartelSelecSalir, 
+                      cartelVolver, cartelTitulo, fondoMenu, cartelExit, cartelExitNo, cartelExitSi, selecExitNo, selecExitSi};*/
+// Posiciones de las imagenes originales
+  int[][] posiciones = {
+    {450, 350},  //0-Cartel Niveles 
+    {450, 350},  //1-Cartel Selec Niveles
+    {450, 450},  //2-Cartel Puntuaciones 
+    {450, 450},  //3-Cartel Selec Puntuaciones
+    {450, 550},  //4-Cartel Salir 
+    {450, 550},  //5-Cartel Selec Salir 
+    {30, 625},   //6-Cartel Volver 
+    {440, 0},    //7-Cartel Titulo 
+    {0, 0},      //8-Fondo Menu 
+    {470, 310},  //9-Cartel Exit 
+    {635, 420},  //10-Cartel Exit No 
+    {530, 420},  //11-Cartel Exit Si 
+    {635, 420},  //12-Selec Exit No 
+    {530, 420}   //13-Selec Exit Si 
+  };
+   int numImagenes = posiciones.length;
+void setup() {
+  fullScreen();
+  //size(1280,720);
+  anchoNuevo = width;
+  altoNuevo = height;
   frameRate(30);
   smooth();
-  background(gris);
-  
-// Carga el GIF animado 
-  myGif = new Gif(this, "Assets/Gif/prueba.gif"); 
-  myGif.loop(); // Hace que el GIF se reproduzca en bucle
-
-//Carga las imagenes
-  cartelNiveles = loadImage("Assets/img/Cartel Niveles.png");
-  cartelSelecNiv = loadImage("Assets/img/Cartel Selec Niveles.png");
-  cartelPuntuaciones = loadImage("Assets/img/Cartel Puntuaciones.png");
-  cartelSelecPunt = loadImage("Assets/img/Cartel Selec Puntuaciones.png");
-  cartelSalir = loadImage("Assets/img/Cartel Salir.png");
-  cartelSelecSalir = loadImage("Assets/img/Cartel Selec Salir.png");
-  cartelVolver = loadImage("Assets/img/Cartel Volver.png");
-  fondoMenu = loadImage("Assets/img/Fondo menu.png");
+  //noCursor();
+// Cargar todas las imágenes
+  cargarImagenes(); 
+// Carga el GIF animado
+  cargarGifs();
+  actualizarPosiciones();
+  //calcularAnchoImg ();   --------------
+  //calcularAltoImg ();    --------------
 }
 
-void draw(){
-  println("Posicion X:", x, ", Posicion Y:", y, ", Menu", menu, ", Escena", escena, ", Salir", salir);
-  if (menu == 0 && salir == 0){
+void draw() {
+  //println("Posicion X:", x, ", Posicion Y:", y, ", Menu", menu, ", Escena", escena, ", Salir", salir);
+  if (menu == 0 && salir == 0) {
     menuInicio.menu_inicio();
     movimientoInicio.movimiento_menu();
-  }
-  else if ((menu == 1) && (escena == 1)){
-     escenaInicio.escena_inicio(); 
-  }
-  else if ((menu == 1) && (escena == 2)){
-     escenaInicio.escena_inicio();
-  }
-  else if ((menu == 1) && (salir == 1)){
-     escenaInicio.Salir();
-     movimientoInicio.movimiento_salir();
+  } else if (menu == 1 && escena == 1) {
+    escenaInicio.escena_inicio();
+  } else if (menu == 1 && escena == 2) {
+    escenaInicio.escena_inicio();
+  } else if (menu == 1 && salir == 1) {
+    escenaInicio.Salir();
+    movimientoInicio.movimiento_salir();
   }
 }
- 
-   
-     
+
+// Función para cambiar la resolución de las coordenadas 
+  int cambiarResolucion(int valor, int tamañoOriginal, int tamañoNuevo) {
+    return (valor * tamañoNuevo) / tamañoOriginal; } 
+// Función para actualizar las posiciones 
+  void actualizarPosiciones() { 
+    for (int i = 0; i < numImagenes; i++) { 
+      int nuevoX = cambiarResolucion(posiciones[i][0], anchoOriginal, anchoNuevo);
+      int nuevoY = cambiarResolucion(posiciones[i][1], altoOriginal, altoNuevo);
+      posiciones[i][0] = nuevoX;
+      posiciones[i][1] = nuevoY;
+      println("Índice " + i + ": Nueva X = " + nuevoX + ", Nueva Y = " + nuevoY); 
+    } 
+  }
+ /* void calcularAnchoImg (){
+    for(int i = 0; i < numImagenes; i++){
+      An_img[i] = (imagenes[i].width/anchoOriginal) * anchoNuevo;
+    }
+  }
+  void calcularAltoImg (){
+    for(int i = 0; i < numImagenes; i++){
+      Al_img[i] = (imagenes[i].height/altoOriginal) * altoNuevo;
+    }
+  }*/
+  
+  
