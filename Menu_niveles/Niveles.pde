@@ -9,12 +9,8 @@ import ddf.minim.ugens.*;
 
 
 class Niveles{
-  //Musica del juego
-  Minim minim;
-  AudioPlayer player;
-  int nivel;
-  //Constructor de niveles
   
+  //Constructor de niveles
   Niveles(float velocidad,float Al, float An,PImage Fondo, String Nivel,PApplet parent,int nivel){
     
     // Inicializar Minim
@@ -48,6 +44,10 @@ class Niveles{
     player = minim.loadFile("Assets/music/"+Nivel+"Musica.mp3",1024);
     this.nivel=nivel;
   }
+  //Musica del juego
+  Minim minim;
+  AudioPlayer player;
+  int nivel;
   
   //Imagenes
   private String Nivel="Nivel_1/";
@@ -100,22 +100,28 @@ class Niveles{
   // Variable para pausar el nivel
   boolean nivelPausado = false;
   int pausa_fin;
+  //Variables para el menu de guarado de puntaje
+  char[] iniciales = {'_', '_', '_'}; // Tres espacios en blanco al inicio
+  int posicionActual = 0; // Indica qué inicial se está editando
+  char[] opciones = {'_', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
+  int indiceActual = 0; // Índice en el array de opciones
+  int contador=0;
   
   //Metodo que maneja la parte gráfica de los niveles
-  
   int interfazNivel() {
     
-    print(player.isPlaying());
-    
     if(!nivelPausado){
-      player.play();// Comienza la reproducción del audio
+      
+      if(!player.isPlaying()){
+        player.play();// Comienza la reproducción del audio
+      }
       
       image(Fondo,0,0); //Fondo del nivel (Imagen);
     
       //Puntaje del jugador en el nivel (mostrar por pantalla)
       fill(200);
-      textSize((height*0.1));
-      text(""+int(puntaje),(width/2)-(width/5)/2,height*0.1);
+      textSize((Al*0.1));
+      text(""+int(puntaje),(An/2)-(An/5)/2,Al*0.1);
       
       //felchas
       flechas();
@@ -132,6 +138,8 @@ class Niveles{
       dibujarMensaje();
       //Musica del nivel
       musica(tecla_v);
+      nivel=1;
+      return nivel;
       
     }
     else{
@@ -142,10 +150,22 @@ class Niveles{
         menu_salida_n();
       }
       if(pausa_fin==2){
+        menu_puntaje();
+      }
+      if(pausa_fin==3){
+        
+        //Reinicio todas las variables necesarias para cuando se quiera volver a iniciar el nivel
+        reiniciarVariables();
         nivel=0;
+        return nivel;
       }
     }
-    
+    /*
+    //Lineas que utilice para determinar la proporciones de la pantalla
+    for (int i = 1; i < 5; i++) {
+        line(An / 5 * i, 0, An / 5 * i, Al);
+        line(0, Al / 5 * i, An, Al / 5 * i);
+    }*/
 
     return nivel;
     
@@ -176,12 +196,32 @@ class Niveles{
     }
 
     // Agregar un nuevo cuadro (caja) si hay espacio suficiente al final
-    if (cuadros.isEmpty() || cuadros.get(cuadros.size() - 1).x < x_hud + ancho_hud - alto_hud - espacioEntreCuadros) {
+    if (cuadros.get(cuadros.size() - 1).x < x_hud + ancho_hud - alto_hud - espacioEntreCuadros) {
         cuadros.add(new Cuadro(x_hud + ancho_hud, y_hud, obtenerImagenAleatoria()));
     }
     noClip();
   
   }
+    //Función (método) para devolver la imagenes de forma aleatoria
+  PImage obtenerImagenAleatoria() {
+    float random = random(4);
+    
+    if(random >= 0.0 && random <= 1.0){
+      return caja_abierta_Ab;
+    }
+    else if(random >1.0 && random <=2.0){
+      return caja_abierta_Ar;
+    } 
+    else if(random >2.0 && random <=3.0){
+      return caja_abierta_De;
+    } 
+    else if(random >3.0 && random <=4.0){
+      return caja_abierta_Iz;
+    }
+    return caja_cerrada;
+  }
+  
+  //Dibujo la imagen de los cuadros del centro 
   void cuadros(){
     int i,j;
     float lado_fle = (Al / 5) * 0.9;
@@ -201,6 +241,7 @@ class Niveles{
     }
     
   }
+  //DIbujo la imagen central
   void imagen_central(){
     if (mostrarCuadroCentral) {
       
@@ -246,25 +287,6 @@ class Niveles{
     }
   }
   
-  //Función (método) para devolver la imagenes de forma aleatoria
-  PImage obtenerImagenAleatoria() {
-    float random = random(4);
-    
-    if(random >= 0.0 && random <= 1.0){
-      return caja_abierta_Ab;
-    }
-    else if(random >1.0 && random <=2.0){
-      return caja_abierta_Ar;
-    } 
-    else if(random >2.0 && random <=3.0){
-      return caja_abierta_De;
-    } 
-    else if(random >3.0 && random <=4.0){
-      return caja_abierta_Iz;
-    }
-    return caja_cerrada;
-  }
-  
   //Función (método) que verifica que hacer en el caso de cada tecla dependiendiendo de si el usuario se equivocó o no
   void verificarTecla(PImage imagenEsperada) {
     if (imagenEsperada == Imagen_de_salida && mostrarCuadroCentral) {
@@ -305,7 +327,6 @@ class Niveles{
     if(!player.isPlaying()){
       player.pause();
       pausa_fin=1;
-      tecla_v=' ';
       nivelPausado=true;
     }
 
@@ -331,7 +352,7 @@ class Niveles{
       return false;
     }
     if(tecla_v=='k'){
-      pausa_fin=2;
+      pausa_fin=3;
     }
     return true;
   }
@@ -353,13 +374,109 @@ class Niveles{
     text("NIVEL TERMINADO", xMenu + anchoMenu / 2, yMenu + altoMenu /4);
     text("PUNTAJE: "+int(puntaje), xMenu + anchoMenu / 2, yMenu + (altoMenu /4)*2);
     text("Pulse k para salir ", xMenu + anchoMenu / 2, yMenu + (altoMenu/4)*3);
+    
     if(tecla_v=='k'){
       pausa_fin=2;
     }
     
   }
+  void menu_puntaje() {
+  //Dibujo la imagend el fondo difuminada
+  tint(255, 200);
+  image(fondo, 0, 0);
+  noTint();
+  //Dibujo del menú
+  fill(200);
+  float anchoMenu = An / 2;
+  float altoMenu = Al / 3;
+  float xMenu = (An - anchoMenu) / 2;
+  float yMenu = (Al - altoMenu) / 2;
+  rect(xMenu, yMenu, anchoMenu, altoMenu,10);
+
+  // Título
+  fill(0);
+  textAlign(CENTER, CENTER);
+  textSize(20);
+  text("INGRESE SUS INICIALES", xMenu + anchoMenu / 2, yMenu + altoMenu / 4);
+
+  // Mostrar iniciales seleccionadas
+  textSize(40);
+  for (int i = 0; i < 3; i++) {
+    if (i == posicionActual) {
+      fill(255, 180, 120); // Color de la inicial seleccionada
+    } else {
+      fill(0);
+    }
+    text(iniciales[i], xMenu+anchoMenu/10+(anchoMenu/5*(i+1)) , yMenu + (altoMenu / 2));
+  }
+
+  // Controles
+  textSize(16);
+  fill(0);
+  text("W: Subir letra  |  S: Bajar letra  |  A/D: Cambiar posición  |  L: Guardar", xMenu + anchoMenu / 2, yMenu + (altoMenu / 4) * 3);
+
+  // Lógica de navegación
+  if (tecla_v == 'w') {
+    indiceActual = (indiceActual - 1 + opciones.length) % opciones.length; // Navegación circular hacia atrás
+    iniciales[posicionActual] = opciones[indiceActual];
+  } else if (tecla_v == 's') {
+    indiceActual = (indiceActual + 1) % opciones.length; // Navegación circular hacia adelante
+    iniciales[posicionActual] = opciones[indiceActual];
+  } else if (tecla_v == 'a') {
+    posicionActual = (posicionActual - 1 + 3) % 3; // Moverse entre las iniciales (izquierda)
+    indiceActual = getIndice(iniciales[posicionActual]); // Actualizar índice según la inicial actual
+  } else if (tecla_v == 'd') {
+    posicionActual = (posicionActual + 1) % 3; // Moverse entre las iniciales (derecha)
+    indiceActual = getIndice(iniciales[posicionActual]); // Actualizar índice según la inicial actual
+  } else if (tecla_v == 'l') {
+    if(iniciales[0]!='_' && iniciales[1]!='_' && iniciales[2] != '_'){    
+        String nombre = new String(iniciales);
+        // Formato "AAA 000000"
+        String salida = String.format("%s %06d", nombre, int(puntaje));
+
+        // Guardar en un archivo usando saveStrings()
+        String[] lineasExistentes = loadStrings("Assets/text/puntajes.txt");
+        String[] nuevaLinea = {salida};
+        if (lineasExistentes != null) {
+            // Combina líneas existentes con la nueva
+            lineasExistentes = (String[]) append(lineasExistentes, salida);
+        } else {
+            lineasExistentes = nuevaLinea;
+        }
+        saveStrings("Assets/text/puntajes.txt", lineasExistentes);
+        //println("Iniciales y puntaje guardados: " + salida);
+        /*puntaje=0;
+        tecla_v=' ';
+        nivelPausado=false;*/
+        pausa_fin = 3; // Salir del menú
+    }
+  }
+  tecla_v = '\0'; // Reiniciar tecla
+  }
+  
+  int getIndice(char letra) {
+    for (int i = 0; i < opciones.length; i++) {
+      if (opciones[i] == letra) {
+        return i;
+      }
+    }
+    return 0; // Si no se encuentra, regresar al inicio
+  }
+  
+  //Función para reiniciar variables al finalizar o salir del nivel
+  void reiniciarVariables(){
+    tecla_v=' ';
+    nivelPausado=false;
+    player.rewind();
+    cuadros = new ArrayList<Cuadro>();
+    cuadros.add(new Cuadro(x_hud + ancho_hud, y_hud, obtenerImagenAleatoria()));
+    mostrarCuadroCentral = false;
+    B_o_M=0;
+    puntaje=0;
+  }
   
 }
+
 //Esta clase es la que utilizo para crearl la lista de objetos
 class Cuadro{
   
@@ -383,9 +500,4 @@ class Cuadro{
   
 }
 
-    /*
-    //Lineas que utilice para determinar la proporciones de la pantalla
-    for (i = 1; i < 5; i++) {
-        line(An / 5 * i, 0, An / 5 * i, Al);
-        line(0, Al / 5 * i, An, Al / 5 * i);
-    }*/
+    
