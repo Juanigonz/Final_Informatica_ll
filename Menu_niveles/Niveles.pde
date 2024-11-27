@@ -1,8 +1,24 @@
+//Manejo de audio
+import ddf.minim.*;
+import ddf.minim.analysis.*;
+import ddf.minim.effects.*;
+import ddf.minim.signals.*;
+import ddf.minim.spi.*;
+import ddf.minim.ugens.*;
+
+
+
 class Niveles{
-  
+  //Musica del juego
+  Minim minim;
+  AudioPlayer player;
+  int nivel;
   //Constructor de niveles
   
-  Niveles(float velocidad,float Al, float An,PImage Fondo){
+  Niveles(float velocidad,float Al, float An,PImage Fondo, String Nivel,PApplet parent,int nivel){
+    
+    // Inicializar Minim
+    minim = new Minim(parent);
     
     //Uso this para referirme a las variables globales de la clase
     
@@ -23,85 +39,137 @@ class Niveles{
     cuadros.add(new Cuadro(x_hud + ancho_hud, y_hud, obtenerImagenAleatoria()));
     espacioEntreCuadros = alto_hud*2;
     this.Fondo=Fondo;
-    
-    cuadroCentralTamaño=alto_hud;
+    this.Nivel=Nivel; 
     
     //Variables referidas al nivel
     puntaje=0;
     
+    //Variable referidas a la música del nivel
+    player = minim.loadFile("Assets/music/"+Nivel+"Musica.mp3",1024);
+    this.nivel=nivel;
   }
+  
   //Imagenes
-  PImage Cuadrado_error=loadImage("Assets/img/Cuadrado_error.png");
-  PImage Cuadrado_correcto=loadImage("Assets/img/Cuadrado_correcto.png");
+  private String Nivel="Nivel_1/";
+  private String directorio = "Assets/img/"+Nivel;
   
-  PImage Fondo;
-  PImage cinta_transportadora=loadImage("Assets/img/Cinta_transportadora.png");
+  private PImage Cuadrado_error=loadImage(directorio+"Cuadrado_error.png");
+  private PImage Cuadrado_correcto=loadImage(directorio+"Cuadrado_correcto.png");
   
-  PImage caja_abierta_Ab=loadImage("Assets/img/Caja_abierta_Ab.png");
-  PImage caja_abierta_Ar=loadImage("Assets/img/Caja_abierta_Ar.png");
-  PImage caja_abierta_De=loadImage("Assets/img/Caja_abierta_De.png");
-  PImage caja_abierta_Iz=loadImage("Assets/img/Caja_abierta_Iz.png");
+  private PImage Fondo;
+  private PImage cinta_transportadora=loadImage(directorio+"Cinta_transportadora.png");
+  
+  private PImage caja_abierta_Ab=loadImage(directorio+"Caja_abierta_Ab.png");
+  private PImage caja_abierta_Ar=loadImage(directorio+"Caja_abierta_Ar.png");
+  private PImage caja_abierta_De=loadImage(directorio+"Caja_abierta_De.png");
+  private PImage caja_abierta_Iz=loadImage(directorio+"Caja_abierta_Iz.png");
   
   
-  PImage caja_abierta=loadImage("Assets/img/Caja_abierta.png");
-  PImage caja_cerrada=loadImage("Assets/img/Caja_cerrada.png");
+  //private PImage caja_abierta=loadImage(directorio+"Caja_abierta.png");
+  private PImage caja_cerrada=loadImage(directorio+"Caja_cerrada.png");
   
   //Variable donde se guarda el alto y el ancho
-  float Al;
-  float An;
+  private float Al;
+  private float An;
   
   //Variables globales del HUD
-  float alto_hud;
-  float ancho_hud;
-  float x_hud;
-  float y_hud;
+  private float alto_hud;
+  private float ancho_hud;
+  private float x_hud;
+  private float y_hud;
   
   //Variables de los cuadros que se mueven horizontalmente (las imagenes de las cajas)
-  ArrayList<Cuadro> cuadros; //Una lista de objetos
-  float velocidad;
-  float espacioEntreCuadros;
+  private ArrayList<Cuadro> cuadros; //Una lista de objetos
+  private float velocidad;
+  private float espacioEntreCuadros;
   
   //Margen vertical
-  float margenV;
+  private float margenV;
   
   // Variables para el cuadro en el centro
-  float cuadroCentralAlpha = 0; // Opacidad del cuadro central
-  float cuadroCentralTamaño; // Tamaño del cuadro central
-  PImage Imagen_de_salida; //Variable para cuadar la imagen de la felcha que salio
-  boolean mostrarCuadroCentral = false; // Controla si se muestra el cuadro central
+  private float cuadroCentralAlpha = 0; // Opacidad del cuadro central
+  private PImage Imagen_de_salida; //Variable para guardar la imagen de la felcha que salio
+  private boolean mostrarCuadroCentral = false; // Controla si se muestra el cuadro central
   
   //Variable por si el juagador aprieta bien o mal
   char tecla_v;
-  int B_o_M;
-  int Opacidad_B_o_M;
-  float puntaje;
+  private int B_o_M;
+  private int Opacidad_B_o_M;
+  private float puntaje;
+  
+  // Variable para pausar el nivel
+  boolean nivelPausado = false;
+  int pausa_fin;
   
   //Metodo que maneja la parte gráfica de los niveles
   
-  void interfazNivel() {
+  int interfazNivel() {
     
-    int i, j;
-    image(fondo,0,0);
+    print(player.isPlaying());
+    
+    if(!nivelPausado){
+      player.play();// Comienza la reproducción del audio
+      
+      image(Fondo,0,0); //Fondo del nivel (Imagen);
+    
+      //Puntaje del jugador en el nivel (mostrar por pantalla)
+      fill(200);
+      textSize((height*0.1));
+      text(""+int(puntaje),(width/2)-(width/5)/2,height*0.1);
+      
+      //felchas
+      flechas();
+      
+      // Dibuja los cuadros (cajas) alrededor del círculo
+      
+      cuadros();
+      
+      // Dibujar el cuadro central si está activado
+      imagen_central();
+      //Manejo de botones y mensajes de error o acierto en el nivel
+      manejo_botones();
+      //Mensaje de error o acierto
+      dibujarMensaje();
+      //Musica del nivel
+      musica(tecla_v);
+      
+    }
+    else{
+      if(pausa_fin==0){
+        nivelPausado=menu_pausa();
+      }
+      if(pausa_fin==1){
+        menu_salida_n();
+      }
+      if(pausa_fin==2){
+        nivel=0;
+      }
+    }
+    
+
+    return nivel;
+    
+  }
+  
+  void flechas(){
+    int i;
     // HUD de las flechas presentadas
-    fill(200);
-    textSize((height*0.1));
-    text(""+puntaje,(width/2)-(width/5)/2,height*0.1);
    
    image(cinta_transportadora,x_hud,y_hud,ancho_hud,alto_hud);
-    
-   clip(x_hud, y_hud, ancho_hud, alto_hud);
-
-    for ( i = cuadros.size() - 1; i >= 0; i--) {
-        Cuadro cuadro = cuadros.get(i);
+   clip(x_hud, y_hud, ancho_hud, alto_hud);//Recorta el tamaño exacto del HUD
+   
+   //Recorro desde el final de la lista hasta el inicio por eso -1 al tamaño de la lista
+    for ( i = cuadros.size()-1; i >= 0; i--) {
+        Cuadro cuadro = cuadros.get(i); //Paso la referencia del objeto del indice i que voy a desplazar y dibujar a cuadros para faciliar su escritura y entender que me estoy refiriendo a un objeto de la lista
         cuadro.mover(velocidad);
         cuadro.dibujar(height*0.1,height*0.12 );
 
         // Eliminar cuadro si sale de la pantalla
         if (cuadro.x + alto_hud < x_hud) {
-          //Guardo la imagen asociada a la caja con la flecha que va a ser eliminada
-          Imagen_de_salida=cuadros.get(i).imagen;
-          mostrarCuadroCentral = true; // Mostrar cuadro central
-          cuadroCentralAlpha = 255;   // Restaurar opacidad
+          
+          Imagen_de_salida=cuadros.get(i).imagen; //Guardo la imagen asociada a la caja con la flecha que va a ser eliminada
+          mostrarCuadroCentral = true; //Mostrar cuadro central
+          cuadroCentralAlpha = 255;   //Restaurar opacidad
           cuadros.remove(i);
 
         }
@@ -112,8 +180,10 @@ class Niveles{
         cuadros.add(new Cuadro(x_hud + ancho_hud, y_hud, obtenerImagenAleatoria()));
     }
     noClip();
-
-    // Dibuja los cuadros (cajas) alrededor del círculo
+  
+  }
+  void cuadros(){
+    int i,j;
     float lado_fle = (Al / 5) * 0.9;
     float margen_fleL = ((An / 5) - lado_fle) / 2;
     float margen_fleV = ((Al / 5) - lado_fle) / 2;
@@ -129,131 +199,54 @@ class Niveles{
             }
         }
     }
-  
-
-    // Dibujar el cuadro central si está activado
+    
+  }
+  void imagen_central(){
     if (mostrarCuadroCentral) {
-        
-        float x_disp = An * 0.5;
-        float y_disp = Al * 0.5;
-        
-        imageMode(CENTER);
-        tint(255,cuadroCentralAlpha);
-        image(Imagen_de_salida,x_disp,y_disp,height*0.12,height*0.1 );
-        
-        // Reducir la opacidad
-        cuadroCentralAlpha -= (2.5*velocidad);
-
-        // Desactivar el cuadro central cuando desaparezca
-        if (cuadroCentralAlpha <= 0) {
-            mostrarCuadroCentral = false;
-            Opacidad_B_o_M=255;
-            B_o_M=2;
-            puntaje-=300;
-        }
-        
+      
+      float x_disp = An * 0.5;
+      float y_disp = Al * 0.5;
+      
+      imageMode(CENTER);
+      tint(255,cuadroCentralAlpha);
+      image(Imagen_de_salida,x_disp,y_disp,height*0.12,height*0.1 );
+      
+      // Reducir la opacidad
+      cuadroCentralAlpha -= (2.5*velocidad);
+      
+      // Desactivar el cuadro central cuando desaparezca
+      if (cuadroCentralAlpha <= 0) {
+          mostrarCuadroCentral = false;
+          Opacidad_B_o_M=255;
+          B_o_M=2;
+        puntaje = Math.max(puntaje - 300, 0);
+      }  
     }
     noTint();
     imageMode(CORNER);
-    
-    //Manejo de botones y mensajes de error o acierto en el nivel
-    tint(255,Opacidad_B_o_M);
-    switch(tecla_v){
-      case 'a':
-        if((caja_abierta_Iz==Imagen_de_salida) && (mostrarCuadroCentral==true)){
-          mostrarCuadroCentral=false;
-          Opacidad_B_o_M=255;
-          tecla_v = 'f';
-          B_o_M=1;
-          puntaje+=2.5*cuadroCentralAlpha;
-          print(puntaje);
-        }
-        else if ((caja_abierta_Iz!=Imagen_de_salida) || (mostrarCuadroCentral==false)){
-          Opacidad_B_o_M=255;
-          tecla_v = 'f';
-          B_o_M=2;
-          puntaje-=300;
-        }
+  
+  }
+  void manejo_botones(){
+    switch(tecla_v) {
+    case 'a':
+        verificarTecla(caja_abierta_Iz);
+        break;
+    case 's':
+        verificarTecla(caja_abierta_Ab);
+        break;
+    case 'd':
+        verificarTecla(caja_abierta_De);
+        break;
+    case 'w':
+        verificarTecla(caja_abierta_Ar);
+        break;
+    case 'k':
         break;
         
-        case 's':
-        if((caja_abierta_Ab==Imagen_de_salida) && (mostrarCuadroCentral==true)){
-          mostrarCuadroCentral=false;
-          Opacidad_B_o_M=255;
-          tecla_v = 'f';
-          B_o_M=1;
-          puntaje+=2.5*cuadroCentralAlpha;
-        }
-        else if ((caja_abierta_Ab!=Imagen_de_salida) || (mostrarCuadroCentral==false)){
-          Opacidad_B_o_M=255;
-          tecla_v = 'f';
-          B_o_M=2;
-          puntaje-=300;
-        }
-        break;
-        case 'd':
-        if((caja_abierta_De==Imagen_de_salida) && (mostrarCuadroCentral==true)){
-          mostrarCuadroCentral=false;
-          Opacidad_B_o_M=255;
-          tecla_v = 'f';
-          B_o_M=1;
-          puntaje+=2.5*cuadroCentralAlpha;
-        }
-        else if ((caja_abierta_De!=Imagen_de_salida) || (mostrarCuadroCentral==false)){
-          Opacidad_B_o_M=255;
-          tecla_v = 'f';
-          B_o_M=2;
-          puntaje-=300;
-        }
-        break;
-        case 'w':
-        if((caja_abierta_Ar==Imagen_de_salida) && (mostrarCuadroCentral==true)){
-          mostrarCuadroCentral=false;
-          Opacidad_B_o_M=255;
-          tecla_v = 'f';
-          B_o_M=1;
-          puntaje+=2.5*cuadroCentralAlpha;
-        }
-        else if ((caja_abierta_Ar!=Imagen_de_salida) || (mostrarCuadroCentral==false)){
-          Opacidad_B_o_M=255;
-          tecla_v = 'f';
-          B_o_M=2;
-          puntaje-=300;
-        }
-        break;
-
     }
-    
-    if (B_o_M == 1) { // Cuadro correcto
-      image(Cuadrado_correcto, 0, 0, width * 0.1, width * 0.1);
-      
-      Opacidad_B_o_M -= 5; // Reducir gradualmente la opacidad
-      if (Opacidad_B_o_M <= 0) {
-          B_o_M = 0; // Restablecer el estado solo si la opacidad es 0
-      }
-      
-    } 
-    else if (B_o_M == 2 ) { // Cuadro de error
-    
-      image(Cuadrado_error, 0, 0, width * 0.1, width * 0.1);
-      
-      Opacidad_B_o_M -= 5; // Reducir gradualmente la opacidad
-      if (Opacidad_B_o_M <= 0) {
-          B_o_M = 0; // Restablecer el estado solo si la opacidad es 0
-      }
-      
-    }
-
-    noTint();
-
-    /*
-    //Lineas que utilice para determinar la proporciones de la pantalla
-    for (i = 1; i < 5; i++) {
-        line(An / 5 * i, 0, An / 5 * i, Al);
-        line(0, Al / 5 * i, An, Al / 5 * i);
-    }*/
   }
   
+  //Función (método) para devolver la imagenes de forma aleatoria
   PImage obtenerImagenAleatoria() {
     float random = random(4);
     
@@ -272,8 +265,102 @@ class Niveles{
     return caja_cerrada;
   }
   
-}
+  //Función (método) que verifica que hacer en el caso de cada tecla dependiendiendo de si el usuario se equivocó o no
+  void verificarTecla(PImage imagenEsperada) {
+    if (imagenEsperada == Imagen_de_salida && mostrarCuadroCentral) {
+        mostrarCuadroCentral = false;
+        Opacidad_B_o_M = 255;
+        tecla_v = ' ';
+        B_o_M = 1;
+        puntaje += 2.5 * cuadroCentralAlpha;
+    } else {
+        Opacidad_B_o_M = 255;
+        tecla_v = ' ';
+        B_o_M = 2;
+        puntaje = Math.max(puntaje - 300, 0); //Math.max compara cual resultado es mayor y devuelve el valor más grande
+    }
+  }
+  //Método que dibuja el mensaje los mensaje en caso de ser necesarios
+  void dibujarMensaje() {
+    tint(255,Opacidad_B_o_M);
+    if (B_o_M == 1) { // Correcto
+        image(Cuadrado_correcto, 0, 0, width * 0.1f, width * 0.1f);
+    } else if (B_o_M == 2) { // Incorrecto
+        image(Cuadrado_error, 0, 0, width * 0.1f, width * 0.1f);
+    }
+    Opacidad_B_o_M -= 5;
+    if (Opacidad_B_o_M <= 0) B_o_M = 0;
+    noTint();
+  }
+  //Método para el manejo de la musica fuera del nivel
+  void musica(char tecla){
+   
+    if(tecla=='k'){
+      player.pause();
+      pausa_fin=0;
+      tecla_v=' ';
+      nivelPausado=true;
+      return;
+    }
+    if(!player.isPlaying()){
+      player.pause();
+      pausa_fin=1;
+      tecla_v=' ';
+      nivelPausado=true;
+    }
 
+  }
+  boolean menu_pausa(){
+    tint(255,200);
+    image(fondo,0,0);
+    noTint();
+    fill(200);
+    float anchoMenu = An / 4;
+    float altoMenu = Al / 3;
+    float xMenu = (An - anchoMenu) / 2;
+    float yMenu = (Al - altoMenu) / 2;
+    rect(xMenu, yMenu, anchoMenu, altoMenu, 10); // Con bordes redondeados
+    
+    fill(0);
+    textAlign(CENTER, CENTER);
+    textSize(20);
+    text("NIVEL PAUSADO", xMenu + anchoMenu / 2, yMenu + altoMenu /4);
+    text("Pulse l para continuar", xMenu + anchoMenu / 2, yMenu + (altoMenu /4)*2);
+    text("Pulse k para salir ", xMenu + anchoMenu / 2, yMenu + (altoMenu/4)*3);
+    if(tecla_v=='l'){
+      return false;
+    }
+    if(tecla_v=='k'){
+      pausa_fin=2;
+    }
+    return true;
+  }
+  void menu_salida_n(){
+    tint(255,200);
+    image(fondo,0,0);
+    noTint();
+    fill(200);
+    float anchoMenu = An / 4;
+    float altoMenu = Al / 3;
+    float xMenu = (An - anchoMenu) / 2;
+    float yMenu = (Al - altoMenu) / 2;
+    rect(xMenu, yMenu, anchoMenu, altoMenu, 10); // Con bordes redondeados
+
+    // Agregar texto o botones dentro del menú
+    fill(0);
+    textAlign(CENTER, CENTER);
+    textSize(20);
+    text("NIVEL TERMINADO", xMenu + anchoMenu / 2, yMenu + altoMenu /4);
+    text("PUNTAJE: "+int(puntaje), xMenu + anchoMenu / 2, yMenu + (altoMenu /4)*2);
+    text("Pulse k para salir ", xMenu + anchoMenu / 2, yMenu + (altoMenu/4)*3);
+    if(tecla_v=='k'){
+      pausa_fin=2;
+    }
+    
+  }
+  
+}
+//Esta clase es la que utilizo para crearl la lista de objetos
 class Cuadro{
   
   float x, y; // Posición del cuadro
@@ -295,3 +382,10 @@ class Cuadro{
   }
   
 }
+
+    /*
+    //Lineas que utilice para determinar la proporciones de la pantalla
+    for (i = 1; i < 5; i++) {
+        line(An / 5 * i, 0, An / 5 * i, Al);
+        line(0, Al / 5 * i, An, Al / 5 * i);
+    }*/
