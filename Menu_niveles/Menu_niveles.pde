@@ -1,6 +1,4 @@
 import processing.serial.*;
-// Declara el objeto Serial
-Serial myPort;
 
 SubMenuLVL MenuNiveles; // Instancia del objeto SubMenuLVL
 Niveles Nivel_1;        // Instancia del objeto Niveles
@@ -9,6 +7,7 @@ char teclaPresionada = '\0'; // Inicialmente sin tecla presionada
 PImage fondo;
 
 void setup() {
+  //fullScreen();
   size(1280, 720);
   frameRate(30);
   noCursor();
@@ -16,20 +15,19 @@ void setup() {
   // Inicializa el objeto SubMenuLVL con 2 filas y 3 columnas
   MenuNiveles = new SubMenuLVL(2, 3);
   
-  // Busca y abre el puerto serie
-  String portName = Serial.list()[1]; // Ajusta esto según tu puerto
-  print(Serial.list()[0]);
-  print(Serial.list()[1]);
-  myPort = new Serial(this, portName, 9600);
+  //comunicación con arduino
+  Serial myPort;// Declara el objeto Serial
+  String portName = Serial.list()[1];//Inicializar en el puerto adecuado
+  myPort = new Serial(this, portName, 9600);//Configuración del puerto
   
-  // Configura el puerto serie para lecturas
+  // Configurar el puerto serie para lecturas
   myPort.bufferUntil('\n');
   
   // Fondo del nivel 1
   fondo = loadImage("Assets/img/Nivel_1/Fondo.jpg");
   fondo.resize(width, height);
   
-  Nivel_1 = new Niveles(8, height, width, fondo, "Nivel_1/", this, 1);
+  Nivel_1 = new Niveles(8, height, width, fondo, "Nivel_1/", this, 1, myPort);
 }
 
 void draw() {
@@ -48,7 +46,6 @@ void draw() {
     // Procesa la tecla presionada
    if (teclaPresionada != '\0') {
       nivel = MenuNiveles.moverSeleccion(teclaPresionada);
-      print(nivel);
       teclaPresionada = '\0'; // Resetea la tecla después de procesarla
     }
   }
@@ -76,8 +73,22 @@ void serialEvent(Serial myPort) {
     
     // Verifica si el estado recibido es la letra 'a'
     if (estado.equals("a")) {
-      teclaPresionada = 'a'; // Asigna 'a' a la variable teclaPresionada
-      println("Tecla 'a' recibida"); // Imprime para verificar que se recibe correctamente
+      teclaPresionada = 'a';
+    }
+    if (estado.equals("s")) {
+      teclaPresionada = 's';
+    }
+    if (estado.equals("d")) {
+      teclaPresionada = 'd'; 
+    }
+    if (estado.equals("w")) {
+      teclaPresionada = 'w'; 
+    }
+    if (estado.equals("l")) {
+      teclaPresionada = 'l';
+    }
+    if (estado.equals("k")) {
+      teclaPresionada = 'k'; 
     }
   }
 }

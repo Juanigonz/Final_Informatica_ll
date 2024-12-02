@@ -6,12 +6,17 @@ import ddf.minim.signals.*;
 import ddf.minim.spi.*;
 import ddf.minim.ugens.*;
 
+//Manejo de comunicación
+import processing.serial.*;
 
 
 class Niveles{
   
   //Constructor de niveles
-  Niveles(float velocidad,float Al, float An,PImage Fondo, String Nivel,PApplet parent,int nivel){
+  Niveles(float velocidad,float Al, float An,PImage Fondo, String Nivel,PApplet parent,int nivel,Serial myPort){
+    
+    //Inicialización del puerto
+    this.myPort=myPort;
     
     // Inicializar Minim
     minim = new Minim(parent);
@@ -20,7 +25,7 @@ class Niveles{
     
     this.Al=Al;
     this.An=An;
-    this.velocidad=velocidad;
+    this.velocidad=velocidad*(An/1280);
     
     margenV = An * 0.01; //margen vertical usado también para los cuadros del centro y el hud
   
@@ -107,6 +112,9 @@ class Niveles{
   int indiceActual = 0; // Índice en el array de opciones
   int contador=0;
   
+  //Puerto para la comunicación
+  Serial myPort;
+  
   //Metodo que maneja la parte gráfica de los niveles
   int interfazNivel() {
     
@@ -156,17 +164,11 @@ class Niveles{
         
         //Reinicio todas las variables necesarias para cuando se quiera volver a iniciar el nivel
         reiniciarVariables();
+        delay(2000);
         nivel=0;
         return nivel;
       }
     }
-    /*
-    //Lineas que utilice para determinar la proporciones de la pantalla
-    for (int i = 1; i < 5; i++) {
-        line(An / 5 * i, 0, An / 5 * i, Al);
-        line(0, Al / 5 * i, An, Al / 5 * i);
-    }*/
-
     return nivel;
     
   }
@@ -241,7 +243,7 @@ class Niveles{
     }
     
   }
-  //DIbujo la imagen central
+  //Dibujo la imagen central
   void imagen_central(){
     if (mostrarCuadroCentral) {
       
@@ -444,10 +446,6 @@ class Niveles{
             lineasExistentes = nuevaLinea;
         }
         saveStrings("Assets/text/puntajes.txt", lineasExistentes);
-        //println("Iniciales y puntaje guardados: " + salida);
-        /*puntaje=0;
-        tecla_v=' ';
-        nivelPausado=false;*/
         pausa_fin = 3; // Salir del menú
     }
   }
@@ -465,6 +463,9 @@ class Niveles{
   
   //Función para reiniciar variables al finalizar o salir del nivel
   void reiniciarVariables(){
+    for(int i=0;i<3;i++){
+      iniciales[i]='_';
+    }
     tecla_v=' ';
     nivelPausado=false;
     player.rewind();
@@ -473,6 +474,7 @@ class Niveles{
     mostrarCuadroCentral = false;
     B_o_M=0;
     puntaje=0;
+    myPort.write('G');
   }
   
 }

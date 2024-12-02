@@ -1,14 +1,21 @@
 void setup() {
-  pinMode(9, INPUT_PULLUP);   // Configura el pin 7 con resistencia pull-up interna
-  pinMode(8, INPUT_PULLUP);   // Configura el pin 7 con resistencia pull-up interna
-  pinMode(7, INPUT_PULLUP);   // Configura el pin 7 con resistencia pull-up interna
-  pinMode(6, INPUT_PULLUP);   // Configura el pin 7 con resistencia pull-up interna
-  pinMode(5, INPUT_PULLUP);   // Configura el pin 7 con resistencia pull-up interna
-  pinMode(4, INPUT_PULLUP);   // Configura el pin 7 con resistencia pull-up interna
+  
+  //Pin del led para ver la comunicación bidireccional
+  pinMode(13, OUTPUT); 
+
+  //Pines de botones 
+  pinMode(9, INPUT_PULLUP);
+  pinMode(8, INPUT_PULLUP);
+  pinMode(7, INPUT_PULLUP);
+  pinMode(6, INPUT_PULLUP);
+  pinMode(5, INPUT_PULLUP);
+  pinMode(4, INPUT_PULLUP);
   Serial.begin(9600);         // Inicializa la comunicación serie
 }
 
 void loop() {
+  String inVal="\0";
+
   if (digitalRead(5) == LOW) {   // Detecta si el botón está presionado (pin LOW)
     Serial.println("a");          // Imprime 'A' cuando se presiona el botón
     delay(200);                   // Retraso para evitar rebotes
@@ -33,6 +40,20 @@ void loop() {
     Serial.println("k");          // Imprime 'K' cuando se presiona el botón
     delay(200);                   // Retraso para evitar rebotes
   }
+  if(Serial.available() > 0){
+    inVal = Serial.readStringUntil('\n');
+  }
+
+  if(inVal=="G"){
+    for(int i=0;i<2;i++){  
+      digitalWrite(13,HIGH);
+      delay(500);
+      digitalWrite(13,LOW);
+      delay(500);
+    }
+
+  }
+
 }
 
 
