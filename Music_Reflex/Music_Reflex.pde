@@ -1,6 +1,9 @@
 // Librerias
   import gifAnimation.*; // Agrega la posibilidad de utilizar gifs
 
+//String
+  String[] puntuaciones;
+  
 // Resoluciones
   int anchoOriginal = 1280;
   int altoOriginal = 720;  //Esta es la resolucion a la cual se diseño todo
@@ -33,10 +36,12 @@
 
 // Gifs
   Gif myGif;
+  Gif FondoNiv_1, FondoMenuNiv, FondoPunt;
 
 // Imagenes
   PImage cartelNiveles, cartelSelecNiv, cartelPuntuaciones, cartelSelecPunt, cartelSalir, cartelSelecSalir;
   PImage cartelVolver, cartelTitulo, fondoMenu, cartelExit, cartelExitNo, cartelExitSi, selecExitNo, selecExitSi;
+  PImage tablaPunt;
 
   /*PImage[] imagenes = {cartelNiveles, cartelSelecNiv, cartelPuntuaciones, cartelSelecPunt, cartelSalir, cartelSelecSalir, 
                       cartelVolver, cartelTitulo, fondoMenu, cartelExit, cartelExitNo, cartelExitSi, selecExitNo, selecExitSi};*/
@@ -59,11 +64,11 @@
   };
    int numImagenes = posiciones.length;
 void setup() {
-  fullScreen();
-  //size(1280,720);
+  //fullScreen();
+  size(1280,720);
   anchoNuevo = width;
   altoNuevo = height;
-  frameRate(30);
+  frameRate(60);
   smooth();
   //noCursor();
 // Cargar todas las imágenes
