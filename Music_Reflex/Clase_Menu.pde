@@ -14,13 +14,12 @@ class Menu {
               
                  image(cartelSelecNiv, posiciones[1][0], posiciones[1][1], width*0.339, height*0.131);
 
-                if (keyPressed == true) {
-                    if ((key == 'l') || (key == 'L')) {
+                    if ((teclaPresionada == 'l') || (teclaPresionada == 'L')) {
                         menu = 1;
                         escena = 1;
                         delay(500);
+                        teclaPresionada = '\0';
                     }
-                }
             } else {
                 image(cartelNiveles, posiciones[0][0], posiciones[0][1], width*0.339, height*0.131);
             }
@@ -32,12 +31,11 @@ class Menu {
             if ((y > 460) && (y < 510)) {
                 image(cartelSelecPunt, posiciones[3][0],posiciones[3][1], width*0.339, height*0.131);
 
-                if (keyPressed == true) {
-                    if ((key == 'l') || (key == 'L')) {
+                    if ((teclaPresionada == 'l') || (teclaPresionada == 'L')) {
                         menu = 1;
                         escena = 2;
+                        teclaPresionada = '\0';
                     }
-                }
             } else {
                 image(cartelPuntuaciones, posiciones[2][0], posiciones[2][1], width*0.339, height*0.131);
             }
@@ -49,12 +47,11 @@ class Menu {
             if ((y > 560) && (y < 610)) {
                 image(cartelSelecSalir, posiciones[5][0], posiciones[5][1], width*0.339, height*0.131);
 
-                if (keyPressed == true) {
-                    if ((key == 'l') || (key == 'L')) {
+                    if ((teclaPresionada == 'l') || (teclaPresionada == 'L')) {
                         menu = 1;
                         salir = 1;
+                        teclaPresionada = '\0';
                     }
-                }
             } else {
                 image(cartelSalir, posiciones[4][0], posiciones[4][1], width*0.339, height*0.131);
             }

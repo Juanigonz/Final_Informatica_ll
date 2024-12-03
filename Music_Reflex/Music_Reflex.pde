@@ -1,8 +1,11 @@
 // Librerias
   import gifAnimation.*; // Agrega la posibilidad de utilizar gifs
+  import processing.serial.*;
 
 //String
   String[] puntuaciones;
+  
+  char teclaPresionada = '\0';
   
 // Resoluciones
   int anchoOriginal = 1280;
@@ -15,13 +18,9 @@
   color negro = color(0, 0, 0);
   color blanco = color(255, 255, 255);
 
-// Posicion de los cuadrados interactuables en la pantalla
+// Variables de posicion
   int x = 0;
   int y = 0;
-  
-//Redimencion de la imagen
-  //float[] Al_img;   -------------
-  //float[] An_img;   -------------
 
 /* escena = 1 Niveles
    escena = 2 Puntuaciones */
@@ -43,8 +42,6 @@
   PImage cartelVolver, cartelTitulo, fondoMenu, cartelExit, cartelExitNo, cartelExitSi, selecExitNo, selecExitSi;
   PImage tablaPunt;
 
-  /*PImage[] imagenes = {cartelNiveles, cartelSelecNiv, cartelPuntuaciones, cartelSelecPunt, cartelSalir, cartelSelecSalir, 
-                      cartelVolver, cartelTitulo, fondoMenu, cartelExit, cartelExitNo, cartelExitSi, selecExitNo, selecExitSi};*/
 // Posiciones de las imagenes originales
   int[][] posiciones = {
     {450, 350},  //0-Cartel Niveles 
@@ -70,14 +67,11 @@ void setup() {
   altoNuevo = height;
   frameRate(60);
   smooth();
-  //noCursor();
 // Cargar todas las imágenes
   cargarImagenes(); 
 // Carga el GIF animado
   cargarGifs();
   actualizarPosiciones();
-  //calcularAnchoImg ();   --------------
-  //calcularAltoImg ();    --------------
 }
 
 void draw() {
@@ -108,15 +102,8 @@ void draw() {
       println("Índice " + i + ": Nueva X = " + nuevoX + ", Nueva Y = " + nuevoY); 
     } 
   }
- /* void calcularAnchoImg (){
-    for(int i = 0; i < numImagenes; i++){
-      An_img[i] = (imagenes[i].width/anchoOriginal) * anchoNuevo;
-    }
+  
+// Manejo de teclas
+  void keyPressed() {
+    teclaPresionada = key; // Almacena la última tecla presionada
   }
-  void calcularAltoImg (){
-    for(int i = 0; i < numImagenes; i++){
-      Al_img[i] = (imagenes[i].height/altoOriginal) * altoNuevo;
-    }
-  }*/
-  
-  

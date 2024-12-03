@@ -3,13 +3,14 @@ class Escena {
         if (escena == 1) { // Niveles
           //background(gris);
           //image(FondoNiv_1, 0, 0, width, height);
-          image(FondoMenuNiv, 0, 0, width, height);
+          image(fondoMenu, 0, 0, width, height);
           movimientoInicio.Volver ();
         } else if (escena == 2) { // Puntuaciones
           puntuaciones = loadStrings("Assets/text/Puntuacion.txt"); // Carga el archivo .txt
           ordenarPuntajes();
           saveStrings("Assets/text/Puntuacion.txt", puntuaciones); // Guarda el archivo ordenado y recortado
           
+          image(FondoNiv_1, 0, 0, width, height);
           image(tablaPunt, 0, 0, width, height);       
           textSize(40); 
           fill(0);                   // Muestra el contenido del archivo en la pantalla 
@@ -32,22 +33,22 @@ class Escena {
               image(cartelExitNo, posiciones[10][0], posiciones[10][1], width*0.046, height*0.083);
               image(selecExitSi, posiciones[13][0], posiciones[13][1], width*0.046, height*0.083);
 
-              if (keyPressed == true) {
-                if ((key == 'l') || (key == 'L')) {
+                if ((teclaPresionada == 'l') || (teclaPresionada == 'L')) {
                     exit();
                   }
-                }
+                  
             } else if ((x > 640) && (x < 690)) {
                image(cartelExitSi, posiciones[11][0], posiciones[11][1], width*0.046, height*0.083);
                image(selecExitNo, posiciones[12][0], posiciones[12][1], width*0.046, height*0.083);
 
-               if (keyPressed == true) {
-                 if ((key == 'l') || (key == 'L')) {
+                 if ((teclaPresionada == 'l') || (teclaPresionada == 'L')) {
                    menu = 0;
                    salir = 0;
+                   x = 480;
+                   y = 390;
                    delay(100);
+                   teclaPresionada = '\0';
                  }  
-               } 
             }
         }
     }
