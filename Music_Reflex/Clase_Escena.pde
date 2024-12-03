@@ -1,14 +1,8 @@
 class Escena {
     void escena_inicio() {
-        if (escena == 1) { // Niveles
-          //background(gris);
-          //image(FondoNiv_1, 0, 0, width, height);
-          image(fondoMenu, 0, 0, width, height);
-          movimientoInicio.Volver ();
-        } else if (escena == 2) { // Puntuaciones
-          puntuaciones = loadStrings("Assets/text/Puntuacion.txt"); // Carga el archivo .txt
+          puntuaciones = loadStrings("Assets/text/puntajes.txt"); // Carga el archivo .txt
           ordenarPuntajes();
-          saveStrings("Assets/text/Puntuacion.txt", puntuaciones); // Guarda el archivo ordenado y recortado
+          saveStrings("Assets/text/puntajes.txt", puntuaciones); // Guarda el archivo ordenado y recortado
           
           image(FondoNiv_1, 0, 0, width, height);
           image(tablaPunt, 0, 0, width, height);       
@@ -16,9 +10,8 @@ class Escena {
           fill(0);                   // Muestra el contenido del archivo en la pantalla 
           
           for (int i = 0; i < puntuaciones.length; i++) { 
-            text(puntuaciones[i], 540, 165 + i * 50); }
+            text(puntuaciones[i], 560, 165 + i * 50); }
             movimientoInicio.Volver ();
-        }
     }
 
     void Salir() {

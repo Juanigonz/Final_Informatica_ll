@@ -146,7 +146,7 @@ class Niveles{
       dibujarMensaje();
       //Musica del nivel
       musica(tecla_v);
-      nivel=1;
+      nivel=2;
       return nivel;
       
     }
@@ -165,7 +165,7 @@ class Niveles{
         //Reinicio todas las variables necesarias para cuando se quiera volver a iniciar el nivel
         reiniciarVariables();
         delay(2000);
-        nivel=0;
+        nivel=1;
         return nivel;
       }
     }

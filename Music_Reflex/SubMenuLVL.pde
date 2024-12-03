@@ -49,7 +49,7 @@ class SubMenuLVL {
   // Mover la selección con las flechas
   int moverSeleccion(char tecla) {
     
-    int opc=0;
+    int opc=1;
     
     switch(tecla){
       case 'a':
@@ -88,10 +88,10 @@ class SubMenuLVL {
     */
     
     if(fila_selec==0 && columna_selec==0){
-      return 1;
+      return 2;
     }
     else{
-      return 0;
+      return 1;
     }
     
   }

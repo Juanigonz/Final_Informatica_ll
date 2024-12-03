@@ -22,6 +22,7 @@
   int x = 0;
   int y = 0;
 
+//Control de escenas
 /* escena = 1 Niveles
    escena = 2 Puntuaciones */
   int menu = 0;
@@ -32,6 +33,8 @@
   Menu menuInicio = new Menu();
   Escena escenaInicio = new Escena();
   Movimiento movimientoInicio = new Movimiento();
+  SubMenuLVL MenuNiveles; // Instancia del objeto SubMenuLVL
+  Niveles Nivel_1;        // Instancia del objeto Niveles
 
 // Gifs
   Gif myGif;
@@ -40,7 +43,7 @@
 // Imagenes
   PImage cartelNiveles, cartelSelecNiv, cartelPuntuaciones, cartelSelecPunt, cartelSalir, cartelSelecSalir;
   PImage cartelVolver, cartelTitulo, fondoMenu, cartelExit, cartelExitNo, cartelExitSi, selecExitNo, selecExitSi;
-  PImage tablaPunt;
+  PImage tablaPunt, fondo;
 
 // Posiciones de las imagenes originales
   int[][] posiciones = {
@@ -72,6 +75,23 @@ void setup() {
 // Carga el GIF animado
   cargarGifs();
   actualizarPosiciones();
+  
+// Inicializa el objeto SubMenuLVL con 2 filas y 3 columnas
+  MenuNiveles = new SubMenuLVL(2, 3);
+  
+//comunicación con arduino
+  Serial myPort;// Declara el objeto Serial
+  String portName = Serial.list()[0];//Inicializar en el puerto adecuado
+  myPort = new Serial(this, portName, 9600);//Configuración del puerto
+  
+// Configurar el puerto serie para lecturas
+  myPort.bufferUntil('\n');
+  
+// Fondo del nivel 1
+  fondo = loadImage("Assets/img/Nivel_1/Fondo.jpg");
+  fondo.resize(width, height);
+  
+  Nivel_1 = new Niveles(8, height, width, fondo, "Nivel_1/", this, 1, myPort);
 }
 
 void draw() {
@@ -79,9 +99,33 @@ void draw() {
   if (menu == 0 && salir == 0) {
     menuInicio.menu_inicio();
     movimientoInicio.movimiento_menu();
-  } else if (menu == 1 && escena == 1) {
-    escenaInicio.escena_inicio();
-  } else if (menu == 1 && escena == 2) {
+  } else if (menu == 1 && (escena == 1 || escena == 2)) {   
+    if (escena == 1) {
+      background(gris);
+      // Colores de los rectángulos
+      color rectangulosC = color(150, 200, 255);
+      color rectSeleccionado = color(255, 180, 120);
+  
+      //Dibuja la cuadrícula usando el método de la clase
+      MenuNiveles.dibujarCuadricula(0.05, 0.2, rectangulosC, rectSeleccionado);
+      
+      movimientoInicio.Volver ();
+      // Procesa la tecla presionada
+     if (teclaPresionada != '\0') {
+        escena = MenuNiveles.moverSeleccion(teclaPresionada);
+        teclaPresionada = '\0'; // Resetea la tecla después de procesarla
+      }
+    }
+    if (escena == 2) {
+    // Lógica del nivel 1
+    escena = Nivel_1.interfazNivel();
+    if (teclaPresionada != '\0') {
+      Nivel_1.tecla_v = teclaPresionada;
+      teclaPresionada = '\0';
+    }
+    print(escena);
+  }
+  } else if (menu == 1 && escena == 3) {
     escenaInicio.escena_inicio();
   } else if (menu == 1 && salir == 1) {
     escenaInicio.Salir();
