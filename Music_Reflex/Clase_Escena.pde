@@ -1,5 +1,6 @@
 class Escena {
     void escena_inicio() {
+          textAlign(CORNER,CORNER);
           puntuaciones = loadStrings("Assets/text/puntajes_2.txt"); // Carga el archivo .txt
           ordenarPuntajes();
           saveStrings("Assets/text/puntajes_2.txt", puntuaciones); // Guarda el archivo ordenado y recortado

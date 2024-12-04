@@ -55,7 +55,7 @@ class Niveles{
   int nivel;
   
   //Imagenes
-  private String Nivel="Nivel_1/";
+  private String Nivel="Nivel_" + (nivel+1) + "/";
   private String directorio = "Assets/img/"+Nivel;
   
   private PImage Cuadrado_error=loadImage(directorio+"Cuadrado_error.png");
@@ -351,9 +351,9 @@ class Niveles{
   void dibujarMensaje() {
     tint(255,Opacidad_B_o_M);
     if (B_o_M == 1) { // Correcto
-        image(Cuadrado_correcto, 0, 0, width * 0.1f, width * 0.1f);
+        image(Cuadrado_correcto, 0, 0, width * 0.3, width * 0.3);
     } else if (B_o_M == 2) { // Incorrecto
-        image(Cuadrado_error, 0, 0, width * 0.1f, width * 0.1f);
+        image(Cuadrado_error, 0, 0, width * 0.3, width * 0.3);
     }
     Opacidad_B_o_M -= 5;
     if (Opacidad_B_o_M <= 0) B_o_M = 0;
