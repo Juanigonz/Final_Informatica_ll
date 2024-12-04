@@ -64,6 +64,16 @@ class Niveles{
   private PImage Fondo;
   private PImage cinta_transportadora=loadImage(directorio+"Cinta_transportadora.png");
   
+  private PImage flecha_abajo=loadImage(directorio+"Flecha_abajo.png");
+  private PImage flecha_arriba=loadImage(directorio+"Flecha_arriba.png");
+  private PImage flecha_derecha=loadImage(directorio+"Flecha_derecha.png");
+  private PImage flecha_izquierda=loadImage(directorio+"Flecha_izquierda.png");
+  
+  private PImage flecha_abajo_press=loadImage(directorio+"Flecha_press_abajo.png");
+  private PImage flecha_arriba_press=loadImage(directorio+"Flecha_press_arriba.png");
+  private PImage flecha_derecha_press=loadImage(directorio+"Flecha_press_derecha.png");
+  private PImage flecha_izquierda_press=loadImage(directorio+"Flecha_press_izquierda.png");
+  
   private PImage caja_abierta_Ab=loadImage(directorio+"Caja_abierta_Ab.png");
   private PImage caja_abierta_Ar=loadImage(directorio+"Caja_abierta_Ar.png");
   private PImage caja_abierta_De=loadImage(directorio+"Caja_abierta_De.png");
@@ -146,7 +156,6 @@ class Niveles{
       dibujarMensaje();
       //Musica del nivel
       musica(tecla_v);
-      nivel=2;
       return nivel;
       
     }
@@ -165,8 +174,7 @@ class Niveles{
         //Reinicio todas las variables necesarias para cuando se quiera volver a iniciar el nivel
         reiniciarVariables();
         delay(2000);
-        nivel=1;
-        return nivel;
+        return 1;
       }
     }
     return nivel;
@@ -235,10 +243,45 @@ class Niveles{
             float x_fle = margen_fleL + (lado_fle + (margen_fleL * 2)) * i;
             float y_fle = margen_fleV + (Al / 5) * j;
 
-            if ((i == 2 && j == 1) || (i == 1 && j == 2) || (i == 3 && j == 2)||(i == 2 && j == 3)){
-              image(caja_cerrada,x_fle,y_fle,lado_fle,lado_fle);
+            if (i == 2 && j == 1){
+              if(tecla_v=='w'){
+                image(flecha_arriba_press,x_fle,y_fle,lado_fle,lado_fle);
+              }
+              else{
+                image(flecha_arriba,x_fle,y_fle,lado_fle,lado_fle);
+              }
               
             }
+            if(i == 1 && j == 2){
+                if(tecla_v=='a'){
+                image(flecha_izquierda_press,x_fle,y_fle,lado_fle,lado_fle);
+              }
+              else{
+                image(flecha_izquierda,x_fle,y_fle,lado_fle,lado_fle);
+              }
+              
+            }
+            if(i == 3 && j == 2){
+              
+              if(tecla_v=='d'){
+                image(flecha_derecha_press,x_fle,y_fle,lado_fle,lado_fle);
+              }
+              else{
+                image(flecha_derecha,x_fle,y_fle,lado_fle,lado_fle);
+              }
+              
+            }
+            if(i == 2 && j == 3){
+              if(tecla_v=='s'){
+                image(flecha_abajo_press,x_fle,y_fle,lado_fle,lado_fle);
+              }
+              else{
+                image(flecha_abajo,x_fle,y_fle,lado_fle,lado_fle);
+              }
+              
+            }
+              
+            
         }
     }
     
@@ -335,7 +378,7 @@ class Niveles{
   }
   boolean menu_pausa(){
     tint(255,200);
-    image(fondo,0,0);
+    image(Fondo,0,0);
     noTint();
     fill(200);
     float anchoMenu = An / 4;
@@ -360,7 +403,7 @@ class Niveles{
   }
   void menu_salida_n(){
     tint(255,200);
-    image(fondo,0,0);
+    image(Fondo,0,0);
     noTint();
     fill(200);
     float anchoMenu = An / 4;
@@ -385,7 +428,7 @@ class Niveles{
   void menu_puntaje() {
   //Dibujo la imagend el fondo difuminada
   tint(255, 200);
-  image(fondo, 0, 0);
+  image(Fondo, 0, 0);
   noTint();
   //Dibujo del menú
   fill(200);
@@ -435,9 +478,11 @@ class Niveles{
         String nombre = new String(iniciales);
         // Formato "AAA 000000"
         String salida = String.format("%s %06d", nombre, int(puntaje));
-
+        
+        String archivo="puntajes_"+nivel+".txt";
+        
         // Guardar en un archivo usando saveStrings()
-        String[] lineasExistentes = loadStrings("Assets/text/puntajes.txt");
+        String[] lineasExistentes = loadStrings("Assets/text/"+archivo);
         String[] nuevaLinea = {salida};
         if (lineasExistentes != null) {
             // Combina líneas existentes con la nueva
@@ -445,7 +490,8 @@ class Niveles{
         } else {
             lineasExistentes = nuevaLinea;
         }
-        saveStrings("Assets/text/puntajes.txt", lineasExistentes);
+        saveStrings("Assets/text/"+archivo, lineasExistentes);
+        desbloquear_nivel();
         pausa_fin = 3; // Salir del menú
     }
   }
@@ -476,7 +522,24 @@ class Niveles{
     puntaje=0;
     myPort.write('G');
   }
-  
+  void desbloquear_nivel(){
+    
+    String [] niveles_desbloqueados=loadStrings("Assets/text/niveles_desbloqueados.txt");
+    
+    int numero_d_niveles=int(niveles_desbloqueados[0].trim());
+    
+    if(numero_d_niveles<=nivel){
+      numero_d_niveles+=1;
+      
+       PrintWriter output = createWriter("Assets/text/niveles_desbloqueados.txt");
+       output.println(numero_d_niveles);
+       output.close();
+      
+    }
+    
+    
+    
+  }
 }
 
 //Esta clase es la que utilizo para crearl la lista de objetos

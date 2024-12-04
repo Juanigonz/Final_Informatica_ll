@@ -73,23 +73,18 @@ class SubMenuLVL {
     }
     return opc;
   }
-  int validar_nivel(int fila_selec, int columna_selec) { 
-    /*
-    int[] Niv_Des;
-    // Niv_Des como un arreglo para modificar su valor desde dentro de la función
-    String[] lines = loadStrings("Niveles desbloqueados.txt"); // Leer el archivo
-    if (lines.length > 0 && lines[0].length() > 0) { // Asegurarse de que no esté vacío
-      char primerDigito = lines[0].charAt(0); // Tomar el primer carácter de la primera línea
-      Niv_Des[0] = Character.getNumericValue(primerDigito); // Convertir el carácter a entero y asignarlo
-    } else {
-      println("El archivo está vacío o no tiene un valor válido."); // Manejar el caso de archivo vacío
-      Niv_Des[0] = -1; // Valor por defecto en caso de error
-    }
-    */
+  int validar_nivel(int fila_selec, int columna_selec) {
+    String [] niveles_desbloqueados = loadStrings("Assets/text/niveles_desbloqueados.txt");
     
-    if(fila_selec==0 && columna_selec==0){
+    int niveles_des = int(niveles_desbloqueados[0].trim());
+    
+    if(niveles_des>=2 && fila_selec==0 && columna_selec==0){
       return 2;
     }
+    if(niveles_des>=3 && fila_selec==0 && columna_selec==1){
+      return 3;
+    }
+    
     else{
       return 1;
     }

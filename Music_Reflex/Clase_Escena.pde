@@ -1,8 +1,8 @@
 class Escena {
     void escena_inicio() {
-          puntuaciones = loadStrings("Assets/text/puntajes.txt"); // Carga el archivo .txt
+          puntuaciones = loadStrings("Assets/text/puntajes_2.txt"); // Carga el archivo .txt
           ordenarPuntajes();
-          saveStrings("Assets/text/puntajes.txt", puntuaciones); // Guarda el archivo ordenado y recortado
+          saveStrings("Assets/text/puntajes_2.txt", puntuaciones); // Guarda el archivo ordenado y recortado
           
           image(FondoNiv_1, 0, 0, width, height);
           image(tablaPunt, 0, 0, width, height);       

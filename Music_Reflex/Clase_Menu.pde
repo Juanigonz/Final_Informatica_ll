@@ -33,7 +33,7 @@ class Menu {
 
                     if ((teclaPresionada == 'l') || (teclaPresionada == 'L')) {
                         menu = 1;
-                        escena = 3;
+                        escena = 8;
                         teclaPresionada = '\0';
                     }
             } else {

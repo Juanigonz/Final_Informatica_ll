@@ -34,7 +34,7 @@
   Escena escenaInicio = new Escena();
   Movimiento movimientoInicio = new Movimiento();
   SubMenuLVL MenuNiveles; // Instancia del objeto SubMenuLVL
-  Niveles Nivel_1;        // Instancia del objeto Niveles
+  Niveles Nivel_1,Nivel_2;        // Instancia del objetos Niveles
 
 // Gifs
   Gif myGif;
@@ -43,7 +43,7 @@
 // Imagenes
   PImage cartelNiveles, cartelSelecNiv, cartelPuntuaciones, cartelSelecPunt, cartelSalir, cartelSelecSalir;
   PImage cartelVolver, cartelTitulo, fondoMenu, cartelExit, cartelExitNo, cartelExitSi, selecExitNo, selecExitSi;
-  PImage tablaPunt, fondo;
+  PImage tablaPunt;
 
 // Posiciones de las imagenes originales
   int[][] posiciones = {
@@ -88,10 +88,13 @@ void setup() {
   myPort.bufferUntil('\n');
   
 // Fondo del nivel 1
-  fondo = loadImage("Assets/img/Nivel_1/Fondo.jpg");
+  PImage fondo = loadImage("Assets/img/Nivel_1/Fondo.jpg");
+  PImage fondo_2=loadImage("Assets/img/Nivel_2/Fondo.jpg");
   fondo.resize(width, height);
+  fondo_2.resize(width, height);
   
-  Nivel_1 = new Niveles(8, height, width, fondo, "Nivel_1/", this, 1, myPort);
+  Nivel_1 = new Niveles(8, height, width, fondo, "Nivel_1/", this, 2, myPort);
+  Nivel_2 = new Niveles(8, height, width, fondo_2,"Nivel_2/",this, 3, myPort);
 }
 
 void draw() {
@@ -99,7 +102,7 @@ void draw() {
   if (menu == 0 && salir == 0) {
     menuInicio.menu_inicio();
     movimientoInicio.movimiento_menu();
-  } else if (menu == 1 && (escena == 1 || escena == 2)) {   
+  } else if (menu == 1 && (escena >= 1 && escena <= 7)) {   
     if (escena == 1) {
       background(gris);
       // Colores de los rectángulos
@@ -117,15 +120,25 @@ void draw() {
       }
     }
     if (escena == 2) {
-    // Lógica del nivel 1
-    escena = Nivel_1.interfazNivel();
-    if (teclaPresionada != '\0') {
-      Nivel_1.tecla_v = teclaPresionada;
-      teclaPresionada = '\0';
+      // Lógica del nivel 1
+      escena = Nivel_1.interfazNivel();
+      if (teclaPresionada != '\0') {
+        Nivel_1.tecla_v = teclaPresionada;
+        teclaPresionada = '\0';
+      }
+    }
+    if(escena==3){
+      
+      escena = Nivel_2.interfazNivel();
+      
+      if (teclaPresionada != '\0') {
+        Nivel_2.tecla_v = teclaPresionada;
+        teclaPresionada = '\0';
+      }
     }
     print(escena);
-  }
-  } else if (menu == 1 && escena == 3) {
+  
+  } else if (menu == 1 && escena == 8) {
     escenaInicio.escena_inicio();
   } else if (menu == 1 && salir == 1) {
     escenaInicio.Salir();
