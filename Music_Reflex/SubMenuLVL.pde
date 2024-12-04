@@ -54,8 +54,8 @@ class SubMenuLVL {
           fill(colorSeleccionado);
           rect(x-espacioEnRL,y-espacioEnRV,ancho+(2*espacioEnRL),alto+(2*espacioEnRV));
         }
+        fill(colorNormal);
         dibujar_imagenes(x,y,ancho,alto,i,j);
-        
       }
     }
   }
