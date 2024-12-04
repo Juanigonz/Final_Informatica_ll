@@ -71,13 +71,32 @@ void setup() {
   frameRate(60);
   smooth();
 // Cargar todas las imágenes
-  cargarImagenes(); 
+  cargarImagenes();
 // Carga el GIF animado
   cargarGifs();
   actualizarPosiciones();
   
+  PImage Nivel_1_i,Nivel_2_i, Nivel_2_i_bloqueado , Nivel_3_i , Nivel_3_i_bloqueado, Coming_Soon;
+  Nivel_1_i=loadImage("Assets/img/Menu_Niveles/Nivel_1.jpg");
+  
+  Nivel_2_i=loadImage("Assets/img/Menu_Niveles/Nivel_2.jpg");
+  Nivel_2_i_bloqueado=loadImage("Assets/img/Menu_Niveles/Nivel_2_Bloq.jpg");
+  
+  Nivel_3_i=loadImage("Assets/img/Menu_Niveles/Nivel_3.jpg");
+  Nivel_3_i_bloqueado=loadImage("Assets/img/Menu_Niveles/Nivel_3_Bloq.jpg");
+  
+  Coming_Soon=loadImage("Assets/img/Menu_Niveles/Coming_Soon.jpg");
+  
+  Nivel_1_i.resize(width, height);
+  Nivel_2_i.resize(width, height);
+  Nivel_2_i_bloqueado.resize(width, height);
+  Nivel_3_i.resize(width, height);
+  Nivel_3_i_bloqueado.resize(width, height);
+  Coming_Soon.resize(width, height);
+  
+  
 // Inicializa el objeto SubMenuLVL con 2 filas y 3 columnas
-  MenuNiveles = new SubMenuLVL(2, 3);
+  MenuNiveles = new SubMenuLVL(2, 3,Nivel_1_i,Nivel_2_i, Nivel_2_i_bloqueado,Nivel_3_i,Nivel_3_i_bloqueado,Coming_Soon);
   
 //comunicación con arduino
   Serial myPort;// Declara el objeto Serial

@@ -36,52 +36,61 @@ class Niveles{
     y_hud = margenV;
     
     //Parametros de las imagenes
-    cuadros = new ArrayList<Cuadro>();
-    cuadros.add(new Cuadro(x_hud + ancho_hud, y_hud, obtenerImagenAleatoria()));
-    espacioEntreCuadros = alto_hud*2;
-    this.Fondo=Fondo;
-    this.Nivel=Nivel; 
-    
-    //Variables referidas al nivel
     puntaje=0;
     
     //Variable referidas a la música del nivel
     player = minim.loadFile("Assets/music/"+Nivel+"Musica.mp3",1024);
     this.nivel=nivel;
+    
+    //Imagenes del juego cargar
+    this.Nivel=Nivel;
+    directorio = "Assets/img/"+this.Nivel;
+    this.Fondo=Fondo;
+    
+    Cuadrado_error=loadImage(directorio+"Cuadrado_error.png");
+    Cuadrado_correcto=loadImage(directorio+"Cuadrado_correcto.png");
+    
+    cinta_transportadora=loadImage(directorio+"Cinta_transportadora.png");
+    
+    flecha_abajo=loadImage(directorio+"Flecha_abajo.png");
+    flecha_arriba=loadImage(directorio+"Flecha_arriba.png");
+    flecha_derecha=loadImage(directorio+"Flecha_derecha.png");
+    flecha_izquierda=loadImage(directorio+"Flecha_izquierda.png");
+    
+    flecha_abajo_press=loadImage(directorio+"Flecha_press_abajo.png");
+    flecha_arriba_press=loadImage(directorio+"Flecha_press_arriba.png");
+    flecha_derecha_press=loadImage(directorio+"Flecha_press_derecha.png");
+    flecha_izquierda_press=loadImage(directorio+"Flecha_press_izquierda.png");
+    
+    caja_abierta_Ab=loadImage(directorio+"Caja_abierta_Ab.png");
+    caja_abierta_Ar=loadImage(directorio+"Caja_abierta_Ar.png");
+    caja_abierta_De=loadImage(directorio+"Caja_abierta_De.png");
+    caja_abierta_Iz=loadImage(directorio+"Caja_abierta_Iz.png");
+    
+    caja_cerrada=loadImage(directorio+"Caja_cerrada.png");
+    
+    cuadros = new ArrayList<Cuadro>();
+    cuadros.add(new Cuadro(x_hud + ancho_hud, y_hud, obtenerImagenAleatoria()));
+    espacioEntreCuadros = alto_hud*2;
+    
   }
   //Musica del juego
   Minim minim;
   AudioPlayer player;
   int nivel;
-  
+
   //Imagenes
   private String Nivel="Nivel_" + (nivel+1) + "/";
   private String directorio = "Assets/img/"+Nivel;
   
-  private PImage Cuadrado_error=loadImage(directorio+"Cuadrado_error.png");
-  private PImage Cuadrado_correcto=loadImage(directorio+"Cuadrado_correcto.png");
-  
+  private PImage Cuadrado_error;
+  private PImage Cuadrado_correcto;
   private PImage Fondo;
-  private PImage cinta_transportadora=loadImage(directorio+"Cinta_transportadora.png");
-  
-  private PImage flecha_abajo=loadImage(directorio+"Flecha_abajo.png");
-  private PImage flecha_arriba=loadImage(directorio+"Flecha_arriba.png");
-  private PImage flecha_derecha=loadImage(directorio+"Flecha_derecha.png");
-  private PImage flecha_izquierda=loadImage(directorio+"Flecha_izquierda.png");
-  
-  private PImage flecha_abajo_press=loadImage(directorio+"Flecha_press_abajo.png");
-  private PImage flecha_arriba_press=loadImage(directorio+"Flecha_press_arriba.png");
-  private PImage flecha_derecha_press=loadImage(directorio+"Flecha_press_derecha.png");
-  private PImage flecha_izquierda_press=loadImage(directorio+"Flecha_press_izquierda.png");
-  
-  private PImage caja_abierta_Ab=loadImage(directorio+"Caja_abierta_Ab.png");
-  private PImage caja_abierta_Ar=loadImage(directorio+"Caja_abierta_Ar.png");
-  private PImage caja_abierta_De=loadImage(directorio+"Caja_abierta_De.png");
-  private PImage caja_abierta_Iz=loadImage(directorio+"Caja_abierta_Iz.png");
-  
-  
-  //private PImage caja_abierta=loadImage(directorio+"Caja_abierta.png");
-  private PImage caja_cerrada=loadImage(directorio+"Caja_cerrada.png");
+  private PImage cinta_transportadora;
+  private PImage flecha_abajo, flecha_arriba, flecha_derecha, flecha_izquierda;
+  private PImage flecha_abajo_press, flecha_arriba_press, flecha_derecha_press, flecha_izquierda_press;
+  private PImage caja_abierta_Ab, caja_abierta_Ar, caja_abierta_De, caja_abierta_Iz;
+  private PImage caja_cerrada;
   
   //Variable donde se guarda el alto y el ancho
   private float Al;

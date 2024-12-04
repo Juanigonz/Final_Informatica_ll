@@ -3,13 +3,27 @@ class SubMenuLVL {
   int columnas; // Número de columnas
   int seleccionFila; // Fila seleccionada
   int seleccionColumna; // Columna seleccionada
+  
+  PImage Nivel_1, Nivel_2 , Nivel_2_bloqueado , Nivel_3 , Nivel_3_bloqueado, Coming_Soon;
 
   // Constructor de la clase
-  SubMenuLVL(int filas, int columnas) {
+  SubMenuLVL(int filas, int columnas,PImage Nivel_1,PImage Nivel_2,PImage Nivel_2_bloqueado,PImage Nivel_3,PImage Nivel_3_bloqueado,PImage Coming_Soon) {
     this.filas = filas; //Notar el uso de this para referieme al atributo filas de la clase y no del objeto para evitar una ambigüedad (lo mismo para columnas)
     this.columnas = columnas;
     seleccionFila = 0; // Selección inicial en la primera fila
     seleccionColumna = 0; // Selección inicial en la primera columna
+    
+    this.Nivel_1=Nivel_1;
+    
+    this.Nivel_2=Nivel_2;
+    this.Nivel_2_bloqueado=Nivel_2_bloqueado;
+    
+    this.Nivel_3=Nivel_3;
+    this.Nivel_3_bloqueado=Nivel_3_bloqueado;
+    
+    this.Coming_Soon=Coming_Soon;
+    
+    
   }
 
   // Función para dibujar la cuadrícula
@@ -40,10 +54,40 @@ class SubMenuLVL {
           fill(colorSeleccionado);
           rect(x-espacioEnRL,y-espacioEnRV,ancho+(2*espacioEnRL),alto+(2*espacioEnRV));
         }
-        fill(colorNormal);
-        rect(x, y, ancho, alto);
+        dibujar_imagenes(x,y,ancho,alto,i,j);
+        
       }
     }
+  }
+  void dibujar_imagenes(float x,float y,float ancho, float alto,int i,int j){
+    
+    String [] niveles_desbloqueados = loadStrings("Assets/text/niveles_desbloqueados.txt");
+    int niveles_des = int(niveles_desbloqueados[0].trim());
+    
+    if(i==0 && j==0){
+      image(Nivel_1,x,y,ancho,alto);
+    }
+    if(i==0 && j==1){
+      if(niveles_des>=3){
+        image(Nivel_2,x,y,ancho,alto);
+      }
+      else{
+        image(Nivel_2_bloqueado,x,y,ancho,alto);
+      }
+    }
+    if(i==0 && j==2){
+      if(niveles_des>=4){
+        image(Nivel_3,x,y,ancho,alto);
+      }
+      else{
+        image(Nivel_3_bloqueado,x,y,ancho,alto);
+      }
+    }
+    if(i==1){
+      image(Coming_Soon,x,y,ancho,alto);
+    }
+    
+    
   }
 
   // Mover la selección con las flechas
