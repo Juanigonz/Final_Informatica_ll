@@ -1,13 +1,14 @@
-class SubMenuLVL {
+class Menu_LVL {
   int filas; // Número de filas
   int columnas; // Número de columnas
   int seleccionFila; // Fila seleccionada
   int seleccionColumna; // Columna seleccionada
+  int escena;
   
   PImage Nivel_1, Nivel_2 , Nivel_2_bloqueado , Nivel_3 , Nivel_3_bloqueado, Coming_Soon;
 
   // Constructor de la clase
-  SubMenuLVL(int filas, int columnas,PImage Nivel_1,PImage Nivel_2,PImage Nivel_2_bloqueado,PImage Nivel_3,PImage Nivel_3_bloqueado,PImage Coming_Soon) {
+  Menu_LVL(int filas, int columnas,PImage Nivel_1,PImage Nivel_2,PImage Nivel_2_bloqueado,PImage Nivel_3,PImage Nivel_3_bloqueado,PImage Coming_Soon) {
     this.filas = filas; //Notar el uso de this para referieme al atributo filas de la clase y no del objeto para evitar una ambigüedad (lo mismo para columnas)
     this.columnas = columnas;
     seleccionFila = 0; // Selección inicial en la primera fila
@@ -27,7 +28,7 @@ class SubMenuLVL {
   }
 
   // Función para dibujar la cuadrícula
-  void dibujarCuadricula(float margenLPorcentaje, float margenVPorcentaje, color colorNormal, color colorSeleccionado) {
+  int dibujarCuadricula(float margenLPorcentaje, float margenVPorcentaje, color colorNormal, color colorSeleccionado) {
     float An = width; // Ancho de la pantalla
     float Al = height; // Alto de la pantalla
 
@@ -58,6 +59,10 @@ class SubMenuLVL {
         dibujar_imagenes(x,y,ancho,alto,i,j);
       }
     }
+     // Procesa la tecla presionada
+        escena = moverSeleccion(teclaPresionada);
+        teclaPresionada = '\0'; // Resetea la tecla después de procesarla
+        return escena;
   }
   void dibujar_imagenes(float x,float y,float ancho, float alto,int i,int j){
     
@@ -111,10 +116,8 @@ class SubMenuLVL {
       case 'l':
         opc=validar_nivel(seleccionFila,seleccionColumna);
         break;
-      case 'k':
-        opc=0;
-        break;
     }
+    opc=movimientoInicio.Volver(opc);
     return opc;
   }
   int validar_nivel(int fila_selec, int columna_selec) {
