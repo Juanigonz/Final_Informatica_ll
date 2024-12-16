@@ -47,27 +47,7 @@ class Niveles{
     directorio = "Assets/img/"+this.Nivel;
     this.Fondo=Fondo;
     
-    Cuadrado_error=loadImage(directorio+"Cuadrado_error.png");
-    Cuadrado_correcto=loadImage(directorio+"Cuadrado_correcto.png");
-    
-    cinta_transportadora=loadImage(directorio+"Cinta_transportadora.png");
-    
-    flecha_abajo=loadImage(directorio+"Flecha_abajo.png");
-    flecha_arriba=loadImage(directorio+"Flecha_arriba.png");
-    flecha_derecha=loadImage(directorio+"Flecha_derecha.png");
-    flecha_izquierda=loadImage(directorio+"Flecha_izquierda.png");
-    
-    flecha_abajo_press=loadImage(directorio+"Flecha_press_abajo.png");
-    flecha_arriba_press=loadImage(directorio+"Flecha_press_arriba.png");
-    flecha_derecha_press=loadImage(directorio+"Flecha_press_derecha.png");
-    flecha_izquierda_press=loadImage(directorio+"Flecha_press_izquierda.png");
-    
-    caja_abierta_Ab=loadImage(directorio+"Caja_abierta_Ab.png");
-    caja_abierta_Ar=loadImage(directorio+"Caja_abierta_Ar.png");
-    caja_abierta_De=loadImage(directorio+"Caja_abierta_De.png");
-    caja_abierta_Iz=loadImage(directorio+"Caja_abierta_Iz.png");
-    
-    caja_cerrada=loadImage(directorio+"Caja_cerrada.png");
+    cargar_images_nivel();
     
     cuadros = new ArrayList<Cuadro>();
     cuadros.add(new Cuadro(x_hud + ancho_hud, y_hud, obtenerImagenAleatoria()));
@@ -486,9 +466,9 @@ class Niveles{
     if(iniciales[0]!='_' && iniciales[1]!='_' && iniciales[2] != '_'){    
         String nombre = new String(iniciales);
         // Formato "AAA 000000"
-        String salida = String.format("%s %06d", nombre, int(puntaje));
+        String salida = String.format("%s %06d %s %d", nombre, int(puntaje),"Nivel",nivel-1);
         
-        String archivo="puntajes_"+nivel+".txt";
+        String archivo="puntajes.txt";
         
         // Guardar en un archivo usando saveStrings()
         String[] lineasExistentes = loadStrings("Assets/text/"+archivo);
@@ -546,9 +526,32 @@ class Niveles{
       
     }
     
-    
-    
   }
+  
+  void cargar_images_nivel(){
+    Cuadrado_error=loadImage(directorio+"Cuadrado_error.png");
+    Cuadrado_correcto=loadImage(directorio+"Cuadrado_correcto.png");
+    
+    cinta_transportadora=loadImage(directorio+"Cinta_transportadora.png");
+    
+    flecha_abajo=loadImage(directorio+"Flecha_abajo.png");
+    flecha_arriba=loadImage(directorio+"Flecha_arriba.png");
+    flecha_derecha=loadImage(directorio+"Flecha_derecha.png");
+    flecha_izquierda=loadImage(directorio+"Flecha_izquierda.png");
+    
+    flecha_abajo_press=loadImage(directorio+"Flecha_press_abajo.png");
+    flecha_arriba_press=loadImage(directorio+"Flecha_press_arriba.png");
+    flecha_derecha_press=loadImage(directorio+"Flecha_press_derecha.png");
+    flecha_izquierda_press=loadImage(directorio+"Flecha_press_izquierda.png");
+    
+    caja_abierta_Ab=loadImage(directorio+"Caja_abierta_Ab.png");
+    caja_abierta_Ar=loadImage(directorio+"Caja_abierta_Ar.png");
+    caja_abierta_De=loadImage(directorio+"Caja_abierta_De.png");
+    caja_abierta_Iz=loadImage(directorio+"Caja_abierta_Iz.png");
+    
+    caja_cerrada=loadImage(directorio+"Caja_cerrada.png");
+    }
+  
 }
 
 //Esta clase es la que utilizo para crearl la lista de objetos

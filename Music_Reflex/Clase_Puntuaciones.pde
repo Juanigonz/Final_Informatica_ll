@@ -34,7 +34,7 @@ class Puntuaciones {
     // Crea un array de objetos que contienen las líneas y los números
     LineaNumber[] lineaNumbers = new LineaNumber[puntuaciones.length];
     for (int i = 0; i < puntuaciones.length; i++) {
-      String[] parts = split(puntuaciones[i], ' '); // Divide cada línea en partes usando el espacio como delimitador
+      String[] parts = split(puntuaciones[i], ' ');
       if (parts.length > 1) { // Verifica que haya al menos dos partes en la línea
         int number = int(parts[1]); // Asume que el número está después de un espacio
         lineaNumbers[i] = new LineaNumber(puntuaciones[i], number);
@@ -63,3 +63,6 @@ class Puntuaciones {
     return puntuaciones; // Devuelve el array de puntuaciones ordenado
   }
 }
+
+
+  
