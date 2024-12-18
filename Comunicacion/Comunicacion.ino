@@ -40,10 +40,12 @@ void loop() {
     Serial.println("k");          // Imprime 'K' cuando se presiona el botón
     delay(200);                   // Retraso para evitar rebotes
   }
+  //Detectá si hay datos disponibles para leer en el puerto serie
   if(Serial.available() > 0){
-    inVal = Serial.readStringUntil('\n');
+    inVal = Serial.readStringUntil('\n');//Lee los dátos del puerto hasta econtrar un salto de líneas
   }
-
+  
+  /*Si el dato es la letra G entonces encidende y apaga 2 veces la luz del arduino*/
   if(inVal=="G"){
     for(int i=0;i<2;i++){  
       digitalWrite(13,HIGH);

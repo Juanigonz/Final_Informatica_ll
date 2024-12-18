@@ -26,9 +26,14 @@ class Menu_LVL {
     
     
   }
-
+  /*
+  EXPLICACIÓN DEL MÉTODO "dibujarCuadricula":
+    este método se encarga de calcular las proporciones y de dibujar todo lo referido al menu de los niveles
+    con las imagenes del nivel que se manejan con la función dibujar_imagenes y la función moverSeleccion.
+  */
   // Función para dibujar la cuadrícula
   int dibujarCuadricula(float margenLPorcentaje, float margenVPorcentaje, color colorNormal, color colorSeleccionado) {
+    
     float An = width; // Ancho de la pantalla
     float Al = height; // Alto de la pantalla
 
@@ -41,7 +46,7 @@ class Menu_LVL {
     float espacioEnRL = (espacioDL / columnas) * 0.05; // Espaciado horizontal
     float espacioEnRV = (espacioDV / filas) * 0.05;    // Espaciado vertical
 
-    float ancho = (espacioDL / columnas) - (espacioEnRL * 2);
+    float ancho = (espacioDL / columnas)- (espacioEnRL * 2);
     float alto = (espacioDV / filas) - (espacioEnRV * 2);
 
     for (int i = 0; i < filas; i++) {
@@ -56,6 +61,7 @@ class Menu_LVL {
           rect(x-espacioEnRL,y-espacioEnRV,ancho+(2*espacioEnRL),alto+(2*espacioEnRV));
         }
         fill(colorNormal);
+        //rect(x,y,ancho,alto);
         dibujar_imagenes(x,y,ancho,alto,i,j);
       }
     }
@@ -64,6 +70,12 @@ class Menu_LVL {
         teclaPresionada = '\0'; // Resetea la tecla después de procesarla
         return escena;
   }
+  
+  /*
+  EXPLICACIÓN DEL MÉTODO "dibujar_imagenes":
+    este método determina quie imagen se dibuja dependiendo del int del archivo niveles_desbloqueados
+    y de la posición de j e i en el bucle 
+  */
   void dibujar_imagenes(float x,float y,float ancho, float alto,int i,int j){
     
     String [] niveles_desbloqueados = loadStrings("Assets/text/niveles_desbloqueados.txt");
@@ -94,7 +106,14 @@ class Menu_LVL {
     
     
   }
-
+  /*
+  EXPLICACIÓN DEL MÉTODO "moverSeleccion":
+    Este método modifica los valores de seleccionColumnas y seleccionFila para devolverles 
+    un valor que determina en que iteración de bucle dobele se dibuja el rectangulo naranja
+    que sirve para que el suario sepa en donde está parado, esto para las letras a, s, d y w
+    para la letras l llama al método validar_nivel para determinar si en la posición en la que
+    está el cuadro naranja es una opción válida para jugar o no.
+  */
   // Mover la selección con las flechas
   int moverSeleccion(char tecla) {
     
@@ -120,6 +139,14 @@ class Menu_LVL {
     opc=movimientoInicio.Volver(opc);
     return opc;
   }
+  /*
+  EXPLICACIÓN DEL MÉTODO "validar_nivel":
+    Este método lo que hace es determinar según el archivo de texto niveles_desbloqueados
+    si la posición en la que se encuentra el recrtángulo naranja es válida para jugar, esto
+    lo determina a través de una variable de control a la que le retornamos el valor que es el 
+    que recibe opc en moverSeleccion y que es el que retorna para devolverselo al atributo
+    escena.
+  */
   int validar_nivel(int fila_selec, int columna_selec) {
     String [] niveles_desbloqueados = loadStrings("Assets/text/niveles_desbloqueados.txt");
     

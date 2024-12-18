@@ -64,7 +64,7 @@ class Menu {
     // Renderiza el cartel de confirmación de salida
     image(cartelExit, posiciones[9][0], posiciones[9][1], width * 0.226, height * 0.256);
 
-    // Controla el botón "No"
+    // Controla el botón "Si"
     if (x > 530 && x < 550) {
       image(cartelExitNo, posiciones[10][0], posiciones[10][1], width * 0.046, height * 0.083);
       image(selecExitSi, posiciones[13][0], posiciones[13][1], width * 0.046, height * 0.083);
@@ -72,7 +72,7 @@ class Menu {
         exit(); // Cierra el programa
       }
     } else if (x > 640 && x < 690) {
-      // Controla el botón "Sí"
+      // Controla el botón "No"
       image(cartelExitSi, posiciones[11][0], posiciones[11][1], width * 0.046, height * 0.083);
       image(selecExitNo, posiciones[12][0], posiciones[12][1], width * 0.046, height * 0.083);
       if (teclaPresionada == 'l' || teclaPresionada == 'L') {

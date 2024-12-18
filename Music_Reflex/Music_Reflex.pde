@@ -91,23 +91,36 @@ void draw() {
   }
 }
 
-// Función para cambiar la resolución de las coordenadas
-int cambiarResolucion(int valor, int tamañoOriginal, int tamañoNuevo) {
-  return (valor * tamañoNuevo) / tamañoOriginal;
-}
-
-// Función para actualizar las posiciones de las imágenes según la resolución
-void actualizarPosiciones() {
-  for (int i = 0; i < numImagenes; i++) {
-    int nuevoX = cambiarResolucion(posiciones[i][0], anchoOriginal, anchoNuevo);
-    int nuevoY = cambiarResolucion(posiciones[i][1], altoOriginal, altoNuevo);
-    posiciones[i][0] = nuevoX;
-    posiciones[i][1] = nuevoY;
-    println("Índice " + i + ": Nueva X = " + nuevoX + ", Nueva Y = " + nuevoY);
-  }
-}
-
 // Manejo de teclas presionadas
 void keyPressed() {
   teclaPresionada = key; // Almacena la última tecla presionada
+}
+
+void serialEvent(Serial myPort) {
+  // Lee el estado desde el puerto serie
+  String estado = myPort.readStringUntil('\n');
+  
+  if (estado != null) {
+    estado = trim(estado); // Elimina los espacios en blanco
+    
+    // Verifica si el estado recibido es la letra 'a'
+    if (estado.equals("a")) {
+      teclaPresionada = 'a';
+    }
+    if (estado.equals("s")) {
+      teclaPresionada = 's';
+    }
+    if (estado.equals("d")) {
+      teclaPresionada = 'd'; 
+    }
+    if (estado.equals("w")) {
+      teclaPresionada = 'w'; 
+    }
+    if (estado.equals("l")) {
+      teclaPresionada = 'l';
+    }
+    if (estado.equals("k")) {
+      teclaPresionada = 'k'; 
+    }
+  }
 }

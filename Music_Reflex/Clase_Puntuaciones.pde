@@ -33,6 +33,7 @@ class Puntuaciones {
   String[] ordenarPuntajes(String[] puntuaciones) {
     // Crea un array de objetos que contienen las líneas y los números
     LineaNumber[] lineaNumbers = new LineaNumber[puntuaciones.length];
+    
     for (int i = 0; i < puntuaciones.length; i++) {
       String[] parts = split(puntuaciones[i], ' ');
       if (parts.length > 1) { // Verifica que haya al menos dos partes en la línea
